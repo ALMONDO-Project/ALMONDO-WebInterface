@@ -23,7 +23,16 @@ export default class WSGraphParams extends CompleteGraphParams {
   }
 
   updateParam(label: string, newValue: number) {
-    const parameter = this.getParams().find((param) => param.label === label)!;
+    const updatedParams = new WSGraphParams(
+      super
+        .getParams()
+        .find((param) => param.label === "Number of Agents")!.value,
+      this._probability.value,
+      this._kNeighbors.value
+    );
+    const parameter = updatedParams
+      .getParams()
+      .find((param) => param.label === label)!;
     let validatorFunction;
     switch (parameter.label) {
       case "Number of Agents":
@@ -47,6 +56,8 @@ export default class WSGraphParams extends CompleteGraphParams {
     }
     parameter.value = newValue;
     parameter.validatorFun = validatorFunction;
+
+    return updatedParams;
   }
 
   getParams(): GraphParam[] {

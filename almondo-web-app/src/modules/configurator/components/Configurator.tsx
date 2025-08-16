@@ -1,5 +1,5 @@
 import { useSteps } from "../hooks/useSteps";
-import GraphForm from "./forms/GraphForm";
+import GraphsSelector from "./forms/GraphsSelector";
 import LobbyistForm from "./forms/LobbyistForm";
 import ModelForm from "./forms/ModelForm";
 import SimulationForm from "./forms/SimulationForm";
@@ -12,7 +12,7 @@ const Configurator = () => {
   const getCurrentForm = () => {
     switch (currentStep) {
       case 0:
-        return <GraphForm />;
+        return <GraphsSelector />;
       case 1:
         return <LobbyistForm />;
       case 2:

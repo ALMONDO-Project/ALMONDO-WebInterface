@@ -7,7 +7,7 @@ const CustomGraphForm = () => {
     setFormat(e.target.value);
   };
   return (
-    <>
+    <form className="w-2/3 mt-4">
       <label htmlFor="upload-format" className="block mb-2 text-lg font-medium">
         Upload Format
       </label>
@@ -30,7 +30,7 @@ const CustomGraphForm = () => {
             file:py-3 file:px-4
             cursor-pointer"
       />
-    </>
+    </form>
   );
 };
 

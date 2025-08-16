@@ -1,21 +1,54 @@
-import { useState, useEffect } from "react"
-import { getDefaultParamsByGraphType } from "../logic/graphParamsEvaluator"
+import { useState, useEffect, type FormEvent } from "react";
+import {
+  getDefaultParamsByGraphType,
+  graphToFormParameters,
+  graphTypeNameFormatter
+} from "../logic/graphParamsEvaluator";
 
 export const useParametersState = (graphType: string) => {
-    const [parameters, setParameters] = useState(() => getDefaultParamsByGraphType(graphType)!);
-    const [updateToggle, setUpdateToggle] = useState(false);
+  const [parameters, setParameters] = useState(
+    () => getDefaultParamsByGraphType(graphType)!
+  );
 
-    useEffect(() => {
-        setParameters(() => getDefaultParamsByGraphType(graphType)!);
-    }, [graphType]);
+  useEffect(() => {
+    setParameters(() => getDefaultParamsByGraphType(graphType)!);
+  }, [graphType]);
 
-    const handleParameterChange = (paramLabel: string, newValue: number) => {
-        parameters.updateParam(paramLabel, newValue);
-        setUpdateToggle(!updateToggle);
+  const handleParameterChange = (paramLabel: string, newValue: number) => {
+    setParameters(parameters.updateParam(paramLabel, newValue));
+  };
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+    formData.append("graphType", graphTypeNameFormatter(graphType));
+    parameters
+      .getParams()
+      .forEach((param) =>
+        formData.append(
+          graphToFormParameters(graphType, param.label),
+          String(param.value)
+        )
+      );
+
+    const response = await fetch("http://127.0.0.1:5000/generate-graph", {
+        method: "POST",
+        body: formData,
+    })
+
+    if(response.ok) {
+        console.log("Request executed successfully.");
+        const data = await response.json();
+        console.log(data);
+    } else {
+        console.log(response);
     }
+  };
 
-    return {
-        parameters,
-        handleParameterChange
-    }
-}
+  return {
+    parameters,
+    handleParameterChange,
+    handleSubmit
+  };
+};

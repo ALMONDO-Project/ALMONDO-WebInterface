@@ -12,9 +12,22 @@ export default class CompleteGraphParams {
   }
 
   updateParam(label: string, newValue: number) {
-    const parameter = this.getParams().find(param => param.label === label)!;
+    const updatedParams = new CompleteGraphParams(this._numOfAgents.value);
+
+    const parameter = updatedParams
+      .getParams()
+      .find((param) => param.label === label)!;
     parameter.value = newValue;
     parameter.validatorFun = () => newValue >= 100 && newValue <= 10000;
+
+    return updatedParams;
+  }
+
+  areParamsValid() {
+    const allParams = this.getParams();
+    return (
+      allParams.filter((param) => param.isValid()).length === allParams.length
+    );
   }
 
   getParams() {

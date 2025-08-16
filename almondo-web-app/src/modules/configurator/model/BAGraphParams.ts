@@ -14,7 +14,16 @@ export default class BAGraphParams extends CompleteGraphParams {
   }
 
   updateParam(label: string, newValue: number) {
-    const parameter = this.getParams().find((param) => param.label === label)!;
+    const updatedParams = new BAGraphParams(
+      super
+        .getParams()
+        .find((param) => param.label === "Number of Agents")!.value,
+      this._edges.value
+    );
+
+    const parameter = updatedParams
+      .getParams()
+      .find((param) => param.label === label)!;
     let validatorFunction;
     switch (parameter.label) {
       case "Number of Agents":
@@ -26,13 +35,16 @@ export default class BAGraphParams extends CompleteGraphParams {
           newValue <=
             super
               .getParams()
-              .find((param) => param.label === "Number of Agents")!.value - 1;
+              .find((param) => param.label === "Number of Agents")!.value -
+              1;
         break;
       default:
         throw new Error(`No such param: ${label}`);
     }
     parameter.value = newValue;
     parameter.validatorFun = validatorFunction;
+
+    return updatedParams;
   }
 
   getParams(): GraphParam[] {
