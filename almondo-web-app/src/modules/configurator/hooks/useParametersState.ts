@@ -4,11 +4,14 @@ import {
   graphToFormParameters,
   graphTypeNameFormatter
 } from "../logic/graphParamsEvaluator";
+import useGraphState from "../../../stores/graphStore";
 
 export const useParametersState = (graphType: string) => {
   const [parameters, setParameters] = useState(
     () => getDefaultParamsByGraphType(graphType)!
   );
+  const updateGraphNodes = useGraphState((state) => state.updateNodes);
+  const updateGraphEdges = useGraphState((state) => state.updateEdges);
 
   useEffect(() => {
     setParameters(() => getDefaultParamsByGraphType(graphType)!);
@@ -38,9 +41,9 @@ export const useParametersState = (graphType: string) => {
     })
 
     if(response.ok) {
-        console.log("Request executed successfully.");
         const data = await response.json();
-        console.log(data);
+        updateGraphNodes(data.nodes);
+        updateGraphEdges(data.links);
     } else {
         console.log(response);
     }
