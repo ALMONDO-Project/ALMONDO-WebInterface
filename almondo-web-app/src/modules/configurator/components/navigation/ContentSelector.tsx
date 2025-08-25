@@ -35,7 +35,7 @@ const ContentSelector = ({
           </div>
         ))}
       </ul>
-      <div className="mt-8 flex justify-center">{activeContent.component}</div>
+      <div className="mt-8 flex flex-col items-center">{activeContent.component}</div>
     </div>
   );
 };
