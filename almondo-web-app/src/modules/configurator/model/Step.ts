@@ -45,7 +45,7 @@ export default class Step {
 
   complete() {
     if (this.completable) {
-      this.isCompleted = !this.isCompleted;
+      this.isCompleted = true;
     }
   }
 }

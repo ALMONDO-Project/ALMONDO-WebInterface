@@ -22,9 +22,6 @@ const Controls = ({
   return (
     <div className="flex flex-row justify-around p-2">
       {currentStep > 0 && <ControlButton text="Previous" action={previous} />}
-      {steps[currentStep].optional && (
-        <ControlButton text="Skip" action={next} />
-      )}
       {currentStep < steps.length &&
         (currentStep === steps.length - 1 ? (
           <ControlButton
@@ -36,7 +33,7 @@ const Controls = ({
           <ControlButton
             text="Next"
             action={next}
-            disabled={!steps[currentStep].completable}
+            disabled={!steps[currentStep].completable && !steps[currentStep].optional}
           />
         ))}
     </div>

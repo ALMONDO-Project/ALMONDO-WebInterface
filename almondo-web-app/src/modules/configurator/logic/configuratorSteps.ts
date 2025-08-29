@@ -6,7 +6,7 @@ export const getConfiguratorSteps = () => {
   [...Array(4).keys()].forEach((n) => {
     const title = titles[n];
     title === "Lobbyist"
-      ? steps.push(new Step(n, title, true))
+      ? steps.push(new Step(n, title, true, true))
       : steps.push(new Step(n, title));
   });
   return steps;
