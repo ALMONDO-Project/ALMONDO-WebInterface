@@ -2,38 +2,43 @@ import useModelStore from "../../../stores/modelStore";
 import { useState } from "react";
 
 type LobbyistParams = {
-    budget: number,
-    signalCost: number,
-    activeSteps: number,
-    model: number,
-    strategy: File | undefined
-}
+  B: number;
+  c: number;
+  T: number;
+  m: number;
+  strategies: string[];
+  strategy: File | undefined;
+};
+
+type StrategyFile = [string, File];
 
 export const useLobbyistParams = () => {
   const [parameters, setParameters] = useState<LobbyistParams>({
-    budget: 10000,
-    signalCost: 1,
-    activeSteps: 10,
-    model: 1,
+    B: 10000,
+    c: 1,
+    T: 10,
+    m: 1,
+    strategies: [],
     strategy: undefined,
   });
+
   const lobbyistsState = useModelStore((state) => state.lobbyistsState);
-  const addLobbyist = useModelStore((state) => state.addLobbyist); 
+  const addLobbyist = useModelStore((state) => state.addLobbyist);
 
   const handleBudgetChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setParameters({ ...parameters, budget: e.target.valueAsNumber });
+    setParameters({ ...parameters, B: e.target.valueAsNumber });
   };
 
   const handleSignalCostChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setParameters({ ...parameters, signalCost: e.target.valueAsNumber });
+    setParameters({ ...parameters, c: e.target.valueAsNumber });
   };
 
   const handleActiveStepsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setParameters({ ...parameters, activeSteps: e.target.valueAsNumber });
+    setParameters({ ...parameters, T: e.target.valueAsNumber });
   };
 
   const handleModelChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setParameters({ ...parameters, model: Number(e.target.value) });
+    setParameters({ ...parameters, m: Number(e.target.value) });
   };
 
   const handleStrategyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,17 +49,24 @@ export const useLobbyistParams = () => {
     e.preventDefault();
 
     const lobbyistData = {
-        id: lobbyistsState.numberOfLobbyists,
-        budget: parameters.budget,
-        model: parameters.model,
-        signalCost: parameters.signalCost,
-        activeSteps: parameters.activeSteps,
-        strategy: parameters.strategy !== undefined ? parameters.strategy : undefined
-    }
+      id: lobbyistsState.numberOfLobbyists,
+      B: parameters.B,
+      m: parameters.m,
+      c: parameters.c,
+      T: parameters.T,
+      strategies: [],
+      strategy:
+        parameters.strategy !== undefined
+          ? [
+              `lobbyist_strategy_file_${lobbyistsState.numberOfLobbyists}`,
+              parameters.strategy
+            ] as StrategyFile
+          : undefined
+    };
 
     addLobbyist(lobbyistData);
     console.log("Model Updated");
-  }
+  };
 
   return {
     parameters,
@@ -63,6 +75,6 @@ export const useLobbyistParams = () => {
     handleActiveStepsChange,
     handleModelChange,
     handleStrategyChange,
-    handleModelStoreUpdate
+    handleModelStoreUpdate,
   };
 };

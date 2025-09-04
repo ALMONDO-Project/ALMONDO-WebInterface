@@ -13,7 +13,7 @@ const LobbyistForm = () => {
 
   return (
     <div className="flex flex-col items-center h-3/4 mt-8">
-      <h1 className="font-medium text-2xl">Lobbyist Form</h1>
+      <h1 className="font-medium text-2xl">Add Lobbyists</h1>
       <h2 className="font-medium mt-8">Parameters</h2>
       <form className="w-2/3 mt-8" onSubmit={handleModelStoreUpdate}>
         <label
@@ -26,7 +26,7 @@ const LobbyistForm = () => {
           type="number"
           id="budget-input"
           min={0}
-          value={parameters.budget}
+          value={parameters.B}
           onChange={(e) => handleBudgetChange(e)}
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
         ></input>
@@ -40,7 +40,7 @@ const LobbyistForm = () => {
           type="number"
           id="signal-cost"
           min={0}
-          value={parameters.signalCost}
+          value={parameters.c}
           onChange={(e) => handleSignalCostChange(e)}
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
         ></input>
@@ -54,7 +54,7 @@ const LobbyistForm = () => {
           type="number"
           id="active-steps"
           min={0}
-          value={parameters.activeSteps}
+          value={parameters.T}
           onChange={(e) => handleActiveStepsChange(e)}
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
         ></input>
@@ -66,7 +66,7 @@ const LobbyistForm = () => {
         </label>
         <select
           id="lobbyist-model"
-          defaultValue={parameters.model}
+          defaultValue={parameters.m}
           onChange={(e) => handleModelChange(e)}
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
         >

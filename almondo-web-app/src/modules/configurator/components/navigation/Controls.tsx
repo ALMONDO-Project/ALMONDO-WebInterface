@@ -1,3 +1,4 @@
+import useModelStore from "../../../../stores/modelStore";
 import useGraphState from "../../../../stores/graphStore";
 import type Step from "../../model/Step";
 import ControlButton from "./ControlButton";
@@ -14,9 +15,22 @@ const Controls = ({
   previous: Function;
 }) => {
   const graphNodes = useGraphState((state) => state.nodes);
+  const modelState = useModelStore((state) => state);
+
+  const isValidModelState = () => {
+    return (
+      modelState.lambda !== undefined &&
+      modelState.phi !== undefined &&
+      modelState.initialStatus !== undefined
+    );
+  };
 
   if (graphNodes.length > 0) {
     steps[0].makeCompletable();
+  }
+
+  if (isValidModelState()) {
+    steps[2].makeCompletable();
   }
 
   return (
@@ -33,7 +47,9 @@ const Controls = ({
           <ControlButton
             text="Next"
             action={next}
-            disabled={!steps[currentStep].completable && !steps[currentStep].optional}
+            disabled={
+              !steps[currentStep].completable && !steps[currentStep].optional
+            }
           />
         ))}
     </div>

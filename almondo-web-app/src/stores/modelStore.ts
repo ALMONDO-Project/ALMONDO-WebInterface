@@ -7,11 +7,12 @@ type LobbyistState = {
 
 type LobbyistData = {
     id: number,
-    model: number,
-    budget?: number,
-    signalCost?: number,
-    activeSteps?: number,
-    strategy?: File
+    m: number,
+    B?: number,
+    c?: number,
+    T?: number,
+    strategies: string[],
+    strategy?: [string, File]
 }
 
 type LobbyistsData = LobbyistData[];
@@ -38,7 +39,7 @@ type ModelState = {
     updatePhi: (p: number | number[]) => void,
     updateSeed: (s: number) => void,
     updateInitialStatus: (status: InitialStatus) => void,
-    addLobbyist: (lobbyistData: LobbyistData) => void,
+    addLobbyist: (lobbyistData: LobbyistData) => void
 }
 
 const useModelStore = create<ModelState>()((set) => ({
