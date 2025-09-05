@@ -1,3 +1,4 @@
+import useMonitorState from "../../../stores/monitorStore";
 import useModelStore from "../../../stores/modelStore";
 import { useEffect, useState } from "react";
 
@@ -35,6 +36,7 @@ export const useModelParams = () => {
   const updateLambda = useModelStore(state => state.updateLambda);
   const updatePhi = useModelStore(state => state.updatePhi);
   const updateInitialStatus = useModelStore(state => state.updateInitialStatus);
+  const addMessage = useMonitorState(state => state.addMessage);
 
   useEffect(() => console.log("Model state:\n", modelState), [modelState]);
 
@@ -130,7 +132,11 @@ export const useModelParams = () => {
     updatePhi(parameters.phi);
     updateInitialStatus(initialStatus);
 
-    console.log("Model Updated");
+    addMessage({
+      type: "success",
+      time: new Date(),
+      message: "Model successfully configured."
+    })
   }
 
   const getInitialStatus = () => {

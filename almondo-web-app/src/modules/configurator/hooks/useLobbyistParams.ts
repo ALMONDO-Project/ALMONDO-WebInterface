@@ -1,3 +1,4 @@
+import useMonitorState from "../../../stores/monitorStore";
 import useModelStore from "../../../stores/modelStore";
 import { useState } from "react";
 
@@ -21,6 +22,7 @@ export const useLobbyistParams = () => {
     strategies: [],
     strategy: undefined,
   });
+  const addMessage = useMonitorState(state => state.addMessage);
 
   const lobbyistsState = useModelStore((state) => state.lobbyistsState);
   const addLobbyist = useModelStore((state) => state.addLobbyist);
@@ -65,7 +67,12 @@ export const useLobbyistParams = () => {
     };
 
     addLobbyist(lobbyistData);
-    console.log("Model Updated");
+    
+    addMessage({
+      type: "success",
+      time: new Date(),
+      message: "Lobbyist added successfully."
+    })
   };
 
   return {

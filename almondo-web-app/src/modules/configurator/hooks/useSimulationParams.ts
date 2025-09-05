@@ -1,3 +1,4 @@
+import useMonitorState from "../../../stores/monitorStore";
 import useModelStore from "../../../stores/modelStore";
 import { useState } from "react";
 
@@ -13,6 +14,7 @@ export const useSimulationParams = () => {
   });
 
   const modelState = useModelStore((state) => state);
+  const addMessage = useMonitorState(state => state.addMessage);
 
   const handleTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const iterations = e.target.value === "steady-state" ? undefined : 100;
@@ -25,6 +27,12 @@ export const useSimulationParams = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    addMessage({
+      type: "info",
+      time: new Date(),
+      message: `Running ${parameters.simulationType} simulation.`
+    });
 
     const formData = new FormData();
     formData.append("po", modelState.optimisticProbability.toString());
@@ -65,12 +73,13 @@ export const useSimulationParams = () => {
         body: formData,
     });
 
-    if(response.ok){
-        const data = await response.json();
-        console.log("Simulation run success:\n", data);
-    } else {
-        console.error("error running simulation:\n", response.body);
-    }
+    const data = await response.json();
+
+    addMessage({
+      type: data.success ? "success" : "error",
+      time: new Date(),
+      message: data.message
+    })
   };
 
   return {
