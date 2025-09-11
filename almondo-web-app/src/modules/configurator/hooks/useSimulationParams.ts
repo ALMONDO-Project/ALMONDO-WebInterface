@@ -1,6 +1,7 @@
 import useMonitorState from "../../../stores/monitorStore";
 import useModelStore from "../../../stores/modelStore";
 import { useState } from "react";
+import useSimulationState from "../../../stores/simulationStore";
 
 type Parameters = {
   simulationType: string;
@@ -15,6 +16,7 @@ export const useSimulationParams = () => {
 
   const modelState = useModelStore((state) => state);
   const addMessage = useMonitorState(state => state.addMessage);
+  const updateSimulationResults = useSimulationState(state => state.updateResults);
 
   const handleTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const iterations = e.target.value === "steady-state" ? undefined : 100;
@@ -80,6 +82,8 @@ export const useSimulationParams = () => {
       time: new Date(),
       message: data.message
     })
+
+    updateSimulationResults(data.sim_results);
   };
 
   return {

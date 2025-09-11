@@ -1,8 +1,8 @@
 import Configurator from "./configurator/index";
-import NetworkVisualizer from "./network-visualizer/index"
+import VisualizationPanel from "./visualization/index"
 
 
 export default [
     Configurator,
-    NetworkVisualizer
+    VisualizationPanel
 ]

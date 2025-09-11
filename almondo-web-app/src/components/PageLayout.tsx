@@ -11,12 +11,12 @@ const PageLayout = () => {
   const {isOpenPanel, updateMonitorPanelState, messages, clearAllMessages} = useMonitorPanel();
 
   return (
-    <div className="relative h-screen bg-[#F1F1EF]">
-      <div className="w-full h-full">
+    <div className="relative flex flex-col w-full h-full">
+      <>
         {modules
-          .find((component) => component.name === "network visualizer")
+          .find((component) => component.name === "visualizer")
           ?.component()}
-      </div>
+      </>
       <Sidebar isOpen={isOpen} />
       <MonitorPanel isOpenPanel={isOpenPanel} messages={messages} handleClear={clearAllMessages}/>
       <ActionButton handleAction={updateSidebarState} />
