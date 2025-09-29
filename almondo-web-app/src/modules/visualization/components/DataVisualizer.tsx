@@ -31,7 +31,7 @@ const DataVisualizer = () => {
           <OpinionsEvolution results={results} />
         </>
       ) : (
-        <div className="flex justify-center w-full mt-16 text-lg">No data.</div>
+        <div className="flex justify-center w-full mt-16 text-lg">Run/Load simulation to view results.</div>
       )}
     </div>
   );

@@ -86,10 +86,41 @@ export const useSimulationParams = () => {
     updateSimulationResults(data.sim_results);
   };
 
+  const handleContinue = async (sim_id: string) => {
+    addMessage({
+      type: "info",
+      time: new Date(),
+      message: `Continue ${parameters.simulationType} simulation.`
+    });
+
+    const formData = new FormData();
+
+    formData.append("simulation_id", sim_id);
+    formData.append("runSimulationOption", parameters.simulationType);
+    if(parameters.iterations !== undefined)
+      formData.append("iterations", String(parameters.iterations));
+
+    const response = await fetch("http://127.0.0.1:5000/continue-simulation", {
+        method: "POST",
+        body: formData,
+    });
+
+    const data = await response.json();
+
+    addMessage({
+      type: data.success ? "success" : "error",
+      time: new Date(),
+      message: data.message
+    })
+
+    updateSimulationResults(data.sim_results);
+  }
+
   return {
     parameters,
     handleTypeChange,
     handleIterationsChange,
-    handleSubmit
+    handleSubmit,
+    handleContinue
   };
 };

@@ -21,7 +21,7 @@ ChartJS.register(
   Legend
 );
 
-const getSampledIterations = (totalIterations: number) => {
+/* const getSampledIterations = (totalIterations: number) => {
   if (totalIterations <= 0) {
     return [];
   }
@@ -77,7 +77,7 @@ const getSampledAgentIds = (agentIds: string[]) => {
   }
 
   return sampledIds;
-};
+}; */
 
 const OpinionsEvolution = ({ results }: { results: SimulationResults }) => {
   const evolutionOptions = {
@@ -93,22 +93,24 @@ const OpinionsEvolution = ({ results }: { results: SimulationResults }) => {
     },
   };
 
-  const sampledIterationsLabels = getSampledIterations(results.length);
-  const sampledAgents = getSampledAgentIds(Object.keys(results[0].status));
+  // const sampledIterationsLabels = getSampledIterations(results.length);
+  // const sampledAgents = getSampledAgentIds(Object.keys(results[0].status));
+  const agents = Object.keys(results[0].status);
 
   const evolutionData = {
-    labels: sampledIterationsLabels,
-    datasets: sampledAgents.map((agent) => ({
-      label: `Agent ${agent}`,
+    labels: results.map(result => result.iteration),
+    datasets: agents.map(agent => ({
+      label: "",
       data: results
-        .filter((status) => sampledIterationsLabels.includes(status.iteration))
-        .map((s) => s.status[agent].toFixed(2)),
+        .map(result => result.status[agent].toFixed(2)),
       borderColor:
         results[0].status[agent] < 0.33
           ? "rgba(53, 125, 176, 1)"
           : results[0].status[agent] < 0.67
           ? "rgba(24, 165, 88, 1)"
           : "rgba(206, 38, 38, 1)",
+      borderWidth: 1,
+      pointRadius: 0,
       tension: 0.1,
     })),
   };

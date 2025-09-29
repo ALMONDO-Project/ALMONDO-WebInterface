@@ -39,7 +39,8 @@ type ModelState = {
     updatePhi: (p: number | number[]) => void,
     updateSeed: (s: number) => void,
     updateInitialStatus: (status: InitialStatus) => void,
-    addLobbyist: (lobbyistData: LobbyistData) => void
+    addLobbyist: (lobbyistData: LobbyistData) => void,
+    updateLobbyistsState: (lobbyist: LobbyistState) => void
 }
 
 const useModelStore = create<ModelState>()((set) => ({
@@ -62,7 +63,8 @@ const useModelStore = create<ModelState>()((set) => ({
     addLobbyist: (lobbyistData) => set((state) => ({lobbyistsState: {
         numberOfLobbyists: state.lobbyistsState.numberOfLobbyists + 1,
         data: state.lobbyistsState.data.concat(lobbyistData),
-    }}))
+    }})),
+    updateLobbyistsState: (lobbyists) => set(() => ({lobbyistsState: lobbyists}))
 }))
 
 export default useModelStore;

@@ -9,6 +9,7 @@ import {
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import type { SimulationResults } from "../../../stores/simulationStore";
+import { initializeProbabilityIntervals, updateAgentCounts } from "../logic/opinionsDistributionsUtils";
 
 ChartJS.register(
   CategoryScale,
@@ -22,30 +23,21 @@ ChartJS.register(
 type StatusData = Record<string, number>;
 
 const getDataToDisplay = (status: StatusData) => {
-  const data: Record<string, number> = {};
-  const percentages: Record<string, number> = {};
-  let totalAgents = 0;
+  let intervals = initializeProbabilityIntervals(50);
+  const probabilities = Object.values(status);
+  const totalAgents = probabilities.length;
 
-  for (const value of Object.values(status)) {
-    const roundedValue = parseFloat(value.toFixed(2));
+  intervals = updateAgentCounts(intervals, Object.values(status));
 
-    if (!data[roundedValue]) {
-      data[roundedValue] = 1;
-    } else {
-      data[roundedValue]++;
-    }
-    totalAgents++;
+  for(const interval of intervals) {
+    interval.agentCount = (interval.agentCount / totalAgents) * 100; 
   }
 
-  for (const [key, value] of Object.entries(data)) {
-    percentages[key] = (value / totalAgents) * 100;
-  }
-
-  return percentages;
+  return intervals;
 };
 
 const OpinionsDistribution = ({ results }: { results: SimulationResults }) => {
-  const percentages = getDataToDisplay(results[results.length - 1].status);
+  const intervals = getDataToDisplay(results[results.length - 1].status);
 
   const distributionOptions = {
     responsive: true,
@@ -62,14 +54,14 @@ const OpinionsDistribution = ({ results }: { results: SimulationResults }) => {
     },
   };
 
-  const labels = Object.keys(percentages).sort();
+  const labels = intervals.map(interval => interval.start.toFixed(2) + " - " + interval.end.toFixed(2));
 
   const distributionData = {
     labels,
     datasets: [
       {
-        label: "% Agents and opinions",
-        data: Object.values(percentages),
+        label: "% Agents",
+        data: intervals.map(interval => interval.agentCount),
         borderColor: "rgba(50, 100, 208, 1)",
         backgroundColor: "rgba(59, 130, 216, 0.64)",
       },
