@@ -1,26 +1,35 @@
-import { create } from "zustand"
+import { create } from "zustand";
 
 type Node = {
-    id: string
-}
+  id: string;
+};
 
 type Edge = {
-    source: string,
-    target: string
-}
+  source: string;
+  target: string;
+};
+
+export type Graph = {
+  type: string;
+  nodes: Node[];
+  edges: Edge[];
+};
 
 type GraphState = {
-    nodes: Node[],
-    edges: Edge[],
-    updateNodes: (nodes: Node[]) => void,
-    updateEdges: (edges: Edge[]) => void,
-}
+  graph: Graph | null;
+  updateGraph: (type: string, nodes: Node[], edges: Edge[]) => void;
+};
 
 const useGraphState = create<GraphState>()((set) => ({
-    nodes: [],
-    edges: [],
-    updateNodes: (nodes) => set(() => ({nodes: nodes})),
-    updateEdges: (edges) => set(() => ({edges: edges}))
-}))
+  graph: null,
+  updateGraph: (type, nodes, edges) =>
+    set(() => ({
+      graph: {
+        type: type,
+        nodes: nodes,
+        edges: edges,
+      },
+    })),
+}));
 
-export default useGraphState
+export default useGraphState;

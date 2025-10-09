@@ -14,7 +14,7 @@ const Controls = ({
   next: Function;
   previous: Function;
 }) => {
-  const graphNodes = useGraphState((state) => state.nodes);
+  const graphNodes = useGraphState((state) => state.graph?.nodes);
   const modelState = useModelStore((state) => state);
 
   const isValidModelState = () => {
@@ -25,7 +25,7 @@ const Controls = ({
     );
   };
 
-  if (graphNodes.length > 0) {
+  if (graphNodes !== undefined) {
     steps[0].makeCompletable();
   }
 

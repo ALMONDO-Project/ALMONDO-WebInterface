@@ -3,7 +3,7 @@ import { useDownloadFormatState } from "../../hooks/useDownloadFormatState";
 
 const DownloadPanel = () => {
   const { handleDownload, handleFormatChange } = useDownloadFormatState();
-  const graphNodes = useGraphState((state) => state.nodes);
+  const graphNodes = useGraphState((state) => state.graph?.nodes);
 
   return (
     <div className="flex flex-col items-center border rounded-xl shadow-xl w-2/3 p-4 mt-8 ">
@@ -24,7 +24,7 @@ const DownloadPanel = () => {
       </select>
       <button
         onClick={() => handleDownload()}
-        disabled={graphNodes.length === 0}
+        disabled={graphNodes === undefined}
         className="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-gray-700 disabled:bg-gray-400 text-white hover:bg-gray-900 focus:outline-hidden focus:bg-gray-900 disabled:opacity-50 disabled:pointer-events-none dark:bg-white dark:text-neutral-800"
       >
         Download

@@ -5,8 +5,7 @@ import { useState, type ChangeEvent, type FormEvent } from "react";
 const CustomGraphForm = () => {
   const [format, setFormat] = useState("edgelist");
   const [file, setFile] = useState<Blob | null>(null);
-  const updateGraphNodes = useGraphState((state) => state.updateNodes);
-  const updateGraphEdges = useGraphState((state) => state.updateEdges);
+  const updateGraph = useGraphState(state => state.updateGraph);
   const addMessage = useMonitorState(state => state.addMessage);
 
   const handleFormatSelection = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -39,8 +38,7 @@ const CustomGraphForm = () => {
     const data = await response.json();
 
     if(response.ok) {
-        updateGraphNodes(data.nodes);
-        updateGraphEdges(data.links);
+        updateGraph(format, data.nodes, data.links);
     }
 
     addMessage({

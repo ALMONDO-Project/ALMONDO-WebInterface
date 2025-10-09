@@ -11,8 +11,7 @@ export const useParametersState = (graphType: string) => {
   const [parameters, setParameters] = useState(
     () => getDefaultParamsByGraphType(graphType)!
   );
-  const updateGraphNodes = useGraphState((state) => state.updateNodes);
-  const updateGraphEdges = useGraphState((state) => state.updateEdges);
+  const updateGraph = useGraphState((state) => state.updateGraph);
   const addMessage = useMonitorState((state) => state.addMessage);
 
   useEffect(() => {
@@ -51,8 +50,7 @@ export const useParametersState = (graphType: string) => {
     const data = await response.json();
 
     if (response.ok) {
-      updateGraphNodes(data.nodes);
-      updateGraphEdges(data.links);
+      updateGraph(graphTypeNameFormatter(graphType), data.nodes, data.links);
     }
 
     addMessage({
