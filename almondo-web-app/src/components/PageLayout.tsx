@@ -12,11 +12,11 @@ const PageLayout = () => {
 
   return (
     <div className="relative flex flex-col w-full h-full">
-      <>
+      <div className="absolute inset-0 overflow-y-auto">
         {modules
           .find((component) => component.name === "visualizer")
           ?.component()}
-      </>
+      </div>
       <Sidebar isOpen={isOpen} />
       <MonitorPanel isOpenPanel={isOpenPanel} messages={messages} handleClear={clearAllMessages}/>
       <ActionButton handleAction={updateSidebarState} />

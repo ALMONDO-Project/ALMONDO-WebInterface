@@ -6,7 +6,7 @@ const VisualizationPanel = () => {
   const { mode, handleModeChange } = useVisualizationMode();
 
   return (
-    <>
+    <div className="flex flex-col h-full">
       <ul className="flex flex-row justify-center mt-4 bg-opacity-0">
         <div
           className={`border-b px-2 ${
@@ -40,7 +40,7 @@ const VisualizationPanel = () => {
       <div className="flex-1">
           {mode === "graph" ? <GraphVisualizer /> : <DataVisualizer />}
       </div>
-    </>
+    </div>
   );
 };
 

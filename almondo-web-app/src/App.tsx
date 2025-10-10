@@ -3,9 +3,11 @@ import PageLayout from "./components/PageLayout";
 
 function App() {
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-screen overflow-hidden">
       <Header />
-      <PageLayout />
+      <div className="flex-1 overflow-y-auto">
+        <PageLayout />
+      </div>
     </div>
   );
 }
