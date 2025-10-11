@@ -15,8 +15,11 @@ export const useSimulationParams = () => {
   });
 
   const modelState = useModelStore((state) => state);
-  const addMessage = useMonitorState(state => state.addMessage);
-  const updateSimulationResults = useSimulationState(state => state.updateResults);
+  const addMessage = useMonitorState((state) => state.addMessage);
+  const updateSimulationResults = useSimulationState(
+    (state) => state.updateResults
+  );
+  const updateSimId = useSimulationState((state) => state.updateSimID);
 
   const handleTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const iterations = e.target.value === "steady-state" ? undefined : 100;
@@ -33,7 +36,7 @@ export const useSimulationParams = () => {
     addMessage({
       type: "info",
       time: new Date(),
-      message: `Running ${parameters.simulationType} simulation.`
+      message: `Running ${parameters.simulationType} simulation.`,
     });
 
     const formData = new FormData();
@@ -45,8 +48,14 @@ export const useSimulationParams = () => {
 
     switch (initialStatus.type) {
       case "uniform":
-        formData.append("minRangeUniformDistribution", initialStatus.minRange!.toString());
-        formData.append("maxRangeUniformDistribution", initialStatus.maxRange!.toString());
+        formData.append(
+          "minRangeUniformDistribution",
+          initialStatus.minRange!.toString()
+        );
+        formData.append(
+          "maxRangeUniformDistribution",
+          initialStatus.maxRange!.toString()
+        );
         break;
       case "unbiased":
         formData.append("unbiasedValue", initialStatus.unbiasValue!.toString());
@@ -58,21 +67,27 @@ export const useSimulationParams = () => {
     formData.append("lambdaValue", modelState.lambda!.toString());
     formData.append("phiValue", modelState.phi!.toString());
     formData.append("modelSeed", modelState.modelSeed.toString());
-    formData.append("n_lobbyists", modelState.lobbyistsState.numberOfLobbyists.toString());
-    formData.append("lobbyists_data", JSON.stringify(modelState.lobbyistsState.data));
+    formData.append(
+      "n_lobbyists",
+      modelState.lobbyistsState.numberOfLobbyists.toString()
+    );
+    formData.append(
+      "lobbyists_data",
+      JSON.stringify(modelState.lobbyistsState.data)
+    );
 
-    modelState.lobbyistsState.data.forEach(ld => {
-        if(ld.strategy !== undefined)
-            formData.append(ld.strategy[0], ld.strategy[1]);
-    })
+    modelState.lobbyistsState.data.forEach((ld) => {
+      if (ld.strategy !== undefined)
+        formData.append(ld.strategy[0], ld.strategy[1]);
+    });
 
     formData.append("runSimulationOption", parameters.simulationType);
-    if(parameters.iterations !== undefined)
-        formData.append("iterations", parameters.iterations.toString());
+    if (parameters.iterations !== undefined)
+      formData.append("iterations", parameters.iterations.toString());
 
     const response = await fetch("http://127.0.0.1:5000/run-simulation", {
-        method: "POST",
-        body: formData,
+      method: "POST",
+      body: formData,
     });
 
     const data = await response.json();
@@ -80,9 +95,10 @@ export const useSimulationParams = () => {
     addMessage({
       type: data.success ? "success" : "error",
       time: new Date(),
-      message: data.message
-    })
+      message: data.message,
+    });
 
+    updateSimId(data.simulation_id);
     updateSimulationResults(data.sim_results);
   };
 
@@ -90,19 +106,19 @@ export const useSimulationParams = () => {
     addMessage({
       type: "info",
       time: new Date(),
-      message: `Continue ${parameters.simulationType} simulation.`
+      message: `Continue ${parameters.simulationType} simulation.`,
     });
 
     const formData = new FormData();
 
     formData.append("simulation_id", sim_id);
     formData.append("runSimulationOption", parameters.simulationType);
-    if(parameters.iterations !== undefined)
+    if (parameters.iterations !== undefined)
       formData.append("iterations", String(parameters.iterations));
 
     const response = await fetch("http://127.0.0.1:5000/continue-simulation", {
-        method: "POST",
-        body: formData,
+      method: "POST",
+      body: formData,
     });
 
     const data = await response.json();
@@ -110,17 +126,17 @@ export const useSimulationParams = () => {
     addMessage({
       type: data.success ? "success" : "error",
       time: new Date(),
-      message: data.message
-    })
+      message: data.message,
+    });
 
     updateSimulationResults(data.sim_results);
-  }
+  };
 
   return {
     parameters,
     handleTypeChange,
     handleIterationsChange,
     handleSubmit,
-    handleContinue
+    handleContinue,
   };
 };

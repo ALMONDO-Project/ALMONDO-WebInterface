@@ -16,7 +16,6 @@ import {
   BarController,
 } from "chart.js";
 import { Chart } from "react-chartjs-2";
-import { callback } from "chart.js/helpers";
 
 ChartJS.register(
   CategoryScale,

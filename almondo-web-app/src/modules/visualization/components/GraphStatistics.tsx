@@ -65,7 +65,7 @@ const GraphStatistics = ({ graph }: { graph: Graph }) => {
   }, [graph]);
 
   return (
-    <div className="z-10 absolute top-4 right-4 w-1/6 p-6 bg-white/50 border border-gray-200 rounded-lg shadow-sm">
+    <div className="p-6 bg-white/50 border border-gray-200 rounded-lg shadow-sm">
       <h1 className="text-xl font-semibold leading-none text-gray-900">
         Network Statistics
       </h1>
