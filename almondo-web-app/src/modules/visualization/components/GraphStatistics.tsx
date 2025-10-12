@@ -39,8 +39,6 @@ const GraphStatistics = ({ graph }: { graph: Graph }) => {
         }
       })
       .then((data) => {
-        console.log("data:\n", data);
-
         setMetrics({
           agents: data.graph_basic_info.numNodes,
           connections: data.graph_basic_info.numEdges,

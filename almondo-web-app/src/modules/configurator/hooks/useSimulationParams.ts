@@ -106,7 +106,7 @@ export const useSimulationParams = () => {
     addMessage({
       type: "info",
       time: new Date(),
-      message: `Continue ${parameters.simulationType} simulation.`,
+      message: `Continue simulation: ${sim_id}`,
     });
 
     const formData = new FormData();

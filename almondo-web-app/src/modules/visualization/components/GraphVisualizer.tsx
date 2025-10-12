@@ -15,7 +15,9 @@ type Node = {
 
 const GraphVisualizer = () => {
   const nodeStatsRef = useRef<NodeStatisticsRef>(null);
-  const cosmographRef = useRef<React.ComponentRef<typeof Cosmograph> | null>(null);
+  const cosmographRef = useRef<React.ComponentRef<typeof Cosmograph> | null>(
+    null
+  );
   const graph = useGraphState((state) => state.graph);
   const simId = useSimulationState((state) => state.simID);
   const results = useSimulationState((state) => state.results);
@@ -32,6 +34,22 @@ const GraphVisualizer = () => {
     }
   };
 
+  const computeOpinionColor = (nodeId: string) => {
+    if (results) {
+      const nodeOpinion = results[results.length - 1].status[nodeId];
+
+      console.log('ID:', nodeId);
+      console.log('opinion:', nodeOpinion, '\n');
+
+      return nodeOpinion > 0.66
+        ? "#F87C63"
+        : nodeOpinion >= 0.33
+        ? "#63F87C"
+        : "#7C63F8";
+    }
+    return "#b3b3b3";
+  };
+
   return (
     <>
       <Cosmograph
@@ -39,6 +57,7 @@ const GraphVisualizer = () => {
         nodes={graph?.nodes}
         links={graph?.edges}
         backgroundColor="#FFFFFF"
+        nodeColor={n => computeOpinionColor(n.id)}
         nodeSize={1}
         linkArrows={false}
         showDynamicLabels={false}
