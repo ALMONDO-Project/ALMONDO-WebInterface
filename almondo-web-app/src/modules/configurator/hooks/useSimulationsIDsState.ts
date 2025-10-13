@@ -8,8 +8,7 @@ export const useSimulationsIDsState = () => {
   const [selectedId, setSelectedId] = useState("");
   const updateSimID = useSimulationState((state) => state.updateSimID);
   const updateSimResults = useSimulationState((state) => state.updateResults);
-  const updateGraphNodes = useGraphState((state) => state.updateNodes);
-  const updateGraphEdges = useGraphState((state) => state.updateEdges);
+  const updateGraph = useGraphState((state) => state.updateGraph);
   const updateOP = useModelStore((state) => state.updateOptimisticProbability);
   const updatePP = useModelStore((state) => state.updatePessimisticProbability);
   const updateLambda = useModelStore((state) => state.updateLambda);
@@ -41,8 +40,8 @@ export const useSimulationsIDsState = () => {
 
     if (response.status === 200) {
       const data = await response.json();
-      updateGraphNodes(data.nodes);
-      updateGraphEdges(data.links);
+
+      updateGraph('edgelist', data.nodes, data.links);
       updateSeed(data.sim_params.model_seed);
       updateOP(data.sim_params.p_o);
       updatePP(data.sim_params.p_p);
