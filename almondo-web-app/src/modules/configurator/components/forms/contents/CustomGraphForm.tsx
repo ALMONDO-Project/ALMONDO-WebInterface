@@ -2,6 +2,8 @@ import useMonitorState from "../../../../../stores/monitorStore";
 import useGraphState from "../../../../../stores/graphStore";
 import { useState, type ChangeEvent, type FormEvent } from "react";
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
 const CustomGraphForm = () => {
   const [format, setFormat] = useState("edgelist");
   const [file, setFile] = useState<Blob | null>(null);
@@ -30,7 +32,7 @@ const CustomGraphForm = () => {
     const filename = format === "edgelist" ? "uploaded_edgelist" : "uploaded_adjacency_matrix";
     formData.append(filename, file!);
 
-    const response = await fetch("http://127.0.0.1:5000/generate-graph", {
+    const response = await fetch(`${BACKEND_URL}/generate-graph`, {
         method: "POST",
         body: formData,
     });

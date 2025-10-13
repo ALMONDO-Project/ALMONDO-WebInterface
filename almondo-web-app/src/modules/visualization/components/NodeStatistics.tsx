@@ -2,6 +2,8 @@ import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
 import type { SimulationResults } from "@/stores/simulationStore";
 import type { Graph } from "../../../stores/graphStore";
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
 interface NodeStatisticsProps {
   simId: string;
   iteration?: number;
@@ -30,7 +32,7 @@ const NodeStatistics = forwardRef<NodeStatisticsRef, NodeStatisticsProps>(
 
     useEffect(() => {
       if (selectedNodeId) {
-        fetch("http://127.0.0.1:5000/basic-info-node", {
+        fetch(`${BACKEND_URL}/basic-info-node`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

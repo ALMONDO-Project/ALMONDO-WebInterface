@@ -17,6 +17,8 @@ import {
 } from "chart.js";
 import { Chart } from "react-chartjs-2";
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -197,7 +199,7 @@ const Conformity = ({
   let neutralConformity: ConformityData;
 
   useEffect(() => {
-    fetch("http://127.0.0.1:5000/conformity-score", {
+    fetch(`${BACKEND_URL}/conformity-score`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

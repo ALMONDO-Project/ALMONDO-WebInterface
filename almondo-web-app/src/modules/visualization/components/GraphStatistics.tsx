@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { type Graph } from "../../../stores/graphStore";
 import useMonitorState from "../../../stores/monitorStore";
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
 type Metrics = {
   agents: number;
   connections: number;
@@ -29,7 +31,7 @@ const GraphStatistics = ({ graph }: { graph: Graph }) => {
     );
     formData.append("graph_type", graph.type);
 
-    fetch("http://127.0.0.1:5000/basic-info-graph", {
+    fetch(`${BACKEND_URL}/basic-info-graph`, {
       method: "POST",
       body: formData,
     })

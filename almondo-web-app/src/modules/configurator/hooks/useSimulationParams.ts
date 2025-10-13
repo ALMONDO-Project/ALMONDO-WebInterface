@@ -3,6 +3,8 @@ import useModelStore from "../../../stores/modelStore";
 import { useState } from "react";
 import useSimulationState from "../../../stores/simulationStore";
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
 type Parameters = {
   simulationType: string;
   iterations: number | undefined;
@@ -85,7 +87,7 @@ export const useSimulationParams = () => {
     if (parameters.iterations !== undefined)
       formData.append("iterations", parameters.iterations.toString());
 
-    const response = await fetch("http://127.0.0.1:5000/run-simulation", {
+    const response = await fetch(`${BACKEND_URL}/run-simulation`, {
       method: "POST",
       body: formData,
     });
@@ -116,7 +118,7 @@ export const useSimulationParams = () => {
     if (parameters.iterations !== undefined)
       formData.append("iterations", String(parameters.iterations));
 
-    const response = await fetch("http://127.0.0.1:5000/continue-simulation", {
+    const response = await fetch(`${BACKEND_URL}/continue-simulation`, {
       method: "POST",
       body: formData,
     });

@@ -3,6 +3,8 @@ import useGraphState from "../../../stores/graphStore";
 import useSimulationState from "../../../stores/simulationStore";
 import { useEffect, useState } from "react";
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
 export const useSimulationsIDsState = () => {
   const [IDs, setIDs] = useState([]);
   const [selectedId, setSelectedId] = useState("");
@@ -17,7 +19,7 @@ export const useSimulationsIDsState = () => {
   const updateSeed = useModelStore((state) => state.updateSeed);
 
   useEffect(() => {
-    fetch("http://127.0.0.1:5000/simulations-ids")
+    fetch(`${BACKEND_URL}/simulations-ids`)
       .then((response) => response.json())
       .then((data) => setIDs(data))
       .catch((err) => console.error(err));
@@ -33,7 +35,7 @@ export const useSimulationsIDsState = () => {
     const formData = new FormData();
     formData.append("sim_id", selectedId);
 
-    const response = await fetch("http://127.0.0.1:5000/load-simulation", {
+    const response = await fetch(`${BACKEND_URL}/load-simulation`, {
       method: "POST",
       body: formData,
     });

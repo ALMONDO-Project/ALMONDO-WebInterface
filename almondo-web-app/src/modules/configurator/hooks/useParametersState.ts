@@ -7,6 +7,8 @@ import {
 import useGraphState from "../../../stores/graphStore";
 import useMonitorState from "../../../stores/monitorStore";
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
 export const useParametersState = (graphType: string) => {
   const [parameters, setParameters] = useState(
     () => getDefaultParamsByGraphType(graphType)!
@@ -42,7 +44,7 @@ export const useParametersState = (graphType: string) => {
         )
       );
 
-    const response = await fetch("http://127.0.0.1:5000/generate-graph", {
+    const response = await fetch(`${BACKEND_URL}/generate-graph`, {
       method: "POST",
       body: formData,
     });
