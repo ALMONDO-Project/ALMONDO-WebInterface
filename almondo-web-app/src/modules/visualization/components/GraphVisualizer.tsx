@@ -38,9 +38,6 @@ const GraphVisualizer = () => {
     if (results) {
       const nodeOpinion = results[results.length - 1].status[nodeId];
 
-      console.log('ID:', nodeId);
-      console.log('opinion:', nodeOpinion, '\n');
-
       return nodeOpinion > 0.66
         ? "#F87C63"
         : nodeOpinion >= 0.33

@@ -1,15 +1,18 @@
-import { useModelParams } from "../../hooks/useModelParams";
+import {
+  type ModelFormState,
+} from "../../hooks/useModelForm";
 
 const UniformParameters = ({
   minRange,
   maxRange,
-  handleMinChange,
-  handleMaxChange,
+  handleParamChange,
 }: {
   minRange: number | undefined;
   maxRange: number | undefined;
-  handleMinChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleMaxChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleParamChange: (
+    paramName: string,
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => void;
 }) => {
   return (
     <div className="flex flex-row">
@@ -27,7 +30,7 @@ const UniformParameters = ({
           max={1}
           step={0.01}
           value={minRange}
-          onChange={(e) => handleMinChange(e)}
+          onChange={(e) => handleParamChange("minUniformRange", e)}
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
         ></input>
       </div>
@@ -45,7 +48,7 @@ const UniformParameters = ({
           max={1}
           step={0.01}
           value={maxRange}
-          onChange={(e) => handleMaxChange(e)}
+          onChange={(e) => handleParamChange("maxUniformRange", e)}
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
         ></input>
       </div>
@@ -55,10 +58,13 @@ const UniformParameters = ({
 
 const UnbiasedParameters = ({
   unbiasedValue,
-  handleUnbiasedChange,
+  handleParamChange,
 }: {
   unbiasedValue: number | undefined;
-  handleUnbiasedChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleParamChange: (
+    paramName: string,
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => void;
 }) => {
   return (
     <>
@@ -74,7 +80,7 @@ const UnbiasedParameters = ({
         min={0}
         max={1}
         value={unbiasedValue}
-        onChange={(e) => handleUnbiasedChange(e)}
+        onChange={(e) => handleParamChange("unbiasedValue", e)}
         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
       ></input>
     </>
@@ -104,28 +110,13 @@ const GaussianAndUserParameters = ({
   );
 };
 
-const ModelForm = () => {
-  const {
-    parameters,
-    handleLambdaChange,
-    handleMaxUniformRangeChange,
-    handleMinUniformRangeChange,
-    handleOptimisticChange,
-    handlePessimisticChange,
-    handlePhiChange,
-    handleSeedChange,
-    handleStatusChange,
-    handleStatusTypeChange,
-    handleUnbiasedValueChange,
-    handleModelStoreUpdate,
-  } = useModelParams();
-
+const ModelForm = ({ formState }: { formState: ModelFormState }) => {
   return (
     <div className="flex flex-col items-center h-3/4 mt-8">
       <h1 className="font-medium text-2xl">Configure Model</h1>
       <h2 className="font-medium mt-8">Parameters</h2>
       <div className="w-3/4 mt-8 overflow-y-auto flex-1 min-h-0">
-        <form className="w-full" onSubmit={handleModelStoreUpdate}>
+        <form className="w-full" onSubmit={formState.handleModelConfig}>
           <label
             htmlFor="model-seed-input"
             className="block mb-2 mt-4 text-base font-normal"
@@ -136,8 +127,8 @@ const ModelForm = () => {
             type="number"
             id="model-seed-input"
             min={0}
-            value={parameters.seed}
-            onChange={(e) => handleSeedChange(e)}
+            value={formState.parameters.seed}
+            onChange={(e) => formState.handleParameterChange("seed", e)}
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
           ></input>
           <div className="flex flex-row">
@@ -153,9 +144,11 @@ const ModelForm = () => {
                 id="optimistic-probability-input"
                 min={0}
                 max={1}
-                value={parameters.optimisticProbability}
+                value={formState.parameters.optimisticProbability}
                 step={0.01}
-                onChange={(e) => handleOptimisticChange(e)}
+                onChange={(e) =>
+                  formState.handleParameterChange("optimisticProbability", e)
+                }
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
               ></input>
             </div>
@@ -171,9 +164,11 @@ const ModelForm = () => {
                 id="pessimistic-probability-input"
                 min={0}
                 max={1}
-                value={parameters.pessimisticProbability}
+                value={formState.parameters.pessimisticProbability}
                 step={0.01}
-                onChange={(e) => handlePessimisticChange(e)}
+                onChange={(e) =>
+                  formState.handleParameterChange("pessimisticProbability", e)
+                }
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
               ></input>
             </div>
@@ -189,9 +184,9 @@ const ModelForm = () => {
             id="lambda-input"
             min={0}
             max={1}
-            value={Number(parameters.lambda)}
+            value={Number(formState.parameters.lambda)}
             step={0.01}
-            onChange={(e) => handleLambdaChange(e)}
+            onChange={(e) => formState.handleParameterChange("lambda", e)}
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
           ></input>
           <label
@@ -205,9 +200,9 @@ const ModelForm = () => {
             id="phi-input"
             min={0}
             max={1}
-            value={Number(parameters.phi)}
+            value={Number(formState.parameters.phi)}
             step={0.01}
-            onChange={(e) => handlePhiChange(e)}
+            onChange={(e) => formState.handleParameterChange("phi", e)}
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
           ></input>
           <div className="py-3 mt-4 flex items-center text-sm text-gray-800 before:flex-1 before:border-t before:border-gray-200 before:me-6 after:flex-1 after:border-t after:border-gray-200 after:ms-6">
@@ -221,8 +216,8 @@ const ModelForm = () => {
           </label>
           <select
             id="initial-status-type"
-            defaultValue={parameters.statusType}
-            onChange={(e) => handleStatusTypeChange(e)}
+            defaultValue={formState.parameters.statusType}
+            onChange={(e) => formState.handleStatusTypeChange(e)}
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
           >
             <option value={"uniform"}>Uniform</option>
@@ -231,21 +226,20 @@ const ModelForm = () => {
             <option value={"user_defined"}>User defined</option>
           </select>
           <div className="flex flex-col mt-4">
-            {parameters.statusType === "uniform" ? (
+            {formState.parameters.statusType === "uniform" ? (
               <UniformParameters
-                minRange={parameters.minUniformRange}
-                maxRange={parameters.maxUniformRange}
-                handleMinChange={handleMinUniformRangeChange}
-                handleMaxChange={handleMaxUniformRangeChange}
+                minRange={formState.parameters.minUniformRange}
+                maxRange={formState.parameters.maxUniformRange}
+                handleParamChange={formState.handleParameterChange}
               />
-            ) : parameters.statusType === "unbiased" ? (
+            ) : formState.parameters.statusType === "unbiased" ? (
               <UnbiasedParameters
-                unbiasedValue={parameters.unbiasedValue}
-                handleUnbiasedChange={handleUnbiasedValueChange}
+                unbiasedValue={formState.parameters.unbiasedValue}
+                handleParamChange={formState.handleParameterChange}
               />
             ) : (
               <GaussianAndUserParameters
-                handleStatusChange={handleStatusChange}
+                handleStatusChange={formState.handleStatusChange}
               />
             )}
           </div>
@@ -253,9 +247,9 @@ const ModelForm = () => {
             <button
               type="submit"
               disabled={
-                (parameters.statusType === "gaussian_mixture" ||
-                  parameters.statusType === "user_defined") &&
-                parameters.status === undefined
+                (formState.parameters.statusType === "gaussian_mixture" ||
+                  formState.parameters.statusType === "user_defined") &&
+                formState.parameters.status === undefined
               }
               className="focus:outline-none text-white bg-green-700 disabled:bg-gray-200 hover:bg-green-800 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 mt-4"
             >

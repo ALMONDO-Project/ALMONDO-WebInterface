@@ -6,10 +6,20 @@ import {
 } from "../logic/graphParamsEvaluator";
 import useGraphState from "../../../stores/graphStore";
 import useMonitorState from "../../../stores/monitorStore";
+import type CompleteGraphParams from "../model/CompleteGraphParams";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
-export const useParametersState = (graphType: string) => {
+export type DefaultGraphFormState = {
+  graphType: string;
+  handleGraphTypeChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  parameters: CompleteGraphParams;
+  handleParameterChange: (paramLabel: string, newValue: number) => void;
+  handleSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void>;
+};
+
+export const useDefaultGraphForm = () => {
+  const [graphType, setGraphType] = useState("Erdős-Rényi");
   const [parameters, setParameters] = useState(
     () => getDefaultParamsByGraphType(graphType)!
   );
@@ -22,6 +32,10 @@ export const useParametersState = (graphType: string) => {
 
   const handleParameterChange = (paramLabel: string, newValue: number) => {
     setParameters(parameters.updateParam(paramLabel, newValue));
+  };
+
+  const handleGraphTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setGraphType(e.target.value);
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -63,6 +77,8 @@ export const useParametersState = (graphType: string) => {
   };
 
   return {
+    graphType,
+    handleGraphTypeChange,
     parameters,
     handleParameterChange,
     handleSubmit,

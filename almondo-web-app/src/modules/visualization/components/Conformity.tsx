@@ -177,9 +177,9 @@ const Conformity = ({
           },
         },
         ticks: {
-          autoSkip: true, 
-          maxTicksLimit: 11 // Adjust this as needed for readability
-        }
+          autoSkip: true,
+          maxTicksLimit: 11,
+        },
       },
       y: {
         title: {
@@ -220,8 +220,6 @@ const Conformity = ({
         }
       })
       .then((data) => {
-        console.log("Data:", data);
-
         const newConformityDistributions: ConformityChartData = {
           labels: intervalPoints.map((p) => p.toFixed(2)),
           datasets: [],

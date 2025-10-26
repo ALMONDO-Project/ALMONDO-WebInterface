@@ -1,10 +1,9 @@
 import useSimulationState from "../../../../stores/simulationStore";
-import { useSimulationParams } from "../../hooks/useSimulationParams";
+import { type SimulationFormState } from "../../hooks/useSimulationForm";
 import { useSimulationsIDsState } from "../../hooks/useSimulationsIDsState";
 
-const SimulationForm = () => {
-  const { parameters, handleTypeChange, handleIterationsChange, handleSubmit, handleContinue } =
-    useSimulationParams();
+const SimulationForm = ({formState} : {formState: SimulationFormState}) => {
+  const { parameters, handleTypeChange, handleIterationsChange, handleRun, handleContinue } = formState;
   const { IDs, handleIdSelection, selectedId, handleSimulationLoad } =
     useSimulationsIDsState();
   const sim_id = useSimulationState(state => state.simID)
@@ -13,7 +12,7 @@ const SimulationForm = () => {
     <div className="flex flex-col items-center h-3/4 mt-8">
       <h1 className="font-medium text-2xl">Simulation</h1>
       <h2 className="font-medium mt-8">Parameters</h2>
-      <form className="w-2/3 mt-8" onSubmit={handleSubmit}>
+      <form className="w-2/3 mt-8" onSubmit={handleRun}>
         <label
           htmlFor="simulation-type"
           className="block mb-2 text-base font-normal"
