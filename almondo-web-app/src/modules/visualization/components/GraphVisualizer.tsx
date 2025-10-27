@@ -6,6 +6,7 @@ import NodeStatistics from "./NodeStatistics";
 import type { NodeStatisticsRef } from "./NodeStatistics";
 import useModelStore from "../../../stores/modelStore";
 import { useRef } from "react";
+import centerIcon from "../../../assets/center-icon.png";
 
 type Node = {
   id: string;
@@ -54,7 +55,7 @@ const GraphVisualizer = () => {
         nodes={graph?.nodes}
         links={graph?.edges}
         backgroundColor="#FFFFFF"
-        nodeColor={n => computeOpinionColor(n.id)}
+        nodeColor={(n) => computeOpinionColor(n.id)}
         nodeSize={1}
         linkArrows={false}
         showDynamicLabels={false}
@@ -74,6 +75,16 @@ const GraphVisualizer = () => {
             pessimisticProbability={pp}
             graph={graph!}
           />
+        )}
+        {graph && (
+          <div className="flex justify-end">
+            <button
+              onClick={() => cosmographRef.current?.fitView()}
+              className="size-12 p-3 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50"
+            >
+              <img src={centerIcon} />
+            </button>
+          </div>
         )}
       </div>
     </>
