@@ -27,7 +27,7 @@ export default class BAGraphParams extends CompleteGraphParams {
     let validatorFunction;
     switch (parameter.label) {
       case "Number of Agents":
-        validatorFunction = () => newValue >= 100 && newValue <= 10000;
+        validatorFunction = () => newValue >= 2 && newValue <= 10000;
         break;
       case "Edges to Attach":
         validatorFunction = () =>

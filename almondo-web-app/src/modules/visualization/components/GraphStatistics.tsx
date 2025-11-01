@@ -23,17 +23,16 @@ const GraphStatistics = ({ graph }: { graph: Graph }) => {
       message: `Fetching ${graph.type} graph metrics.`,
     });
 
-    const formData = new FormData();
-    formData.append("nodes", JSON.stringify(graph.nodes.map((n) => n.id)));
-    formData.append(
-      "edges",
-      JSON.stringify(graph.edges.map((e) => [e.source, e.target]))
-    );
-    formData.append("graph_type", graph.type);
-
     fetch(`${BACKEND_URL}/basic-info-graph`, {
       method: "POST",
-      body: formData,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        graph_type: graph.type,
+        nodes: JSON.stringify(graph.nodes.map((n) => n.id)),
+        edges: JSON.stringify(graph.edges.map((e) => [e.source, e.target]))
+      }),
     })
       .then((response) => {
         if (response.status === 200) {
@@ -158,10 +157,22 @@ const GraphStatistics = ({ graph }: { graph: Graph }) => {
                         <tbody className="divide-y divide-gray-200">
                           {metrics?.topDegreeNodes.map((node, i) => (
                             <tr key={node[0]}>
-                              <td className={`px-1 pt-2 ${i === metrics.topDegreeNodes.length - 1 ? '' : 'pb-2'} whitespace-nowrap text-sm font-base text-gray-800 text-center`}>
+                              <td
+                                className={`px-1 pt-2 ${
+                                  i === metrics.topDegreeNodes.length - 1
+                                    ? ""
+                                    : "pb-2"
+                                } whitespace-nowrap text-sm font-base text-gray-800 text-center`}
+                              >
                                 {node[0]}
                               </td>
-                              <td className={`px-1 pt-2 ${i === metrics.topDegreeNodes.length - 1 ? '' : 'pb-2'} whitespace-nowrap text-sm font-base text-gray-800 text-center`}>
+                              <td
+                                className={`px-1 pt-2 ${
+                                  i === metrics.topDegreeNodes.length - 1
+                                    ? ""
+                                    : "pb-2"
+                                } whitespace-nowrap text-sm font-base text-gray-800 text-center`}
+                              >
                                 {node[1]}
                               </td>
                             </tr>

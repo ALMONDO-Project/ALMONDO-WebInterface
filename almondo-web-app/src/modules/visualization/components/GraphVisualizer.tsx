@@ -56,7 +56,7 @@ const GraphVisualizer = () => {
         links={graph?.edges}
         backgroundColor="#FFFFFF"
         nodeColor={(n) => computeOpinionColor(n.id)}
-        nodeSize={1}
+        nodeSize={0.5}
         linkArrows={false}
         showDynamicLabels={false}
         showTopLabels={false}
