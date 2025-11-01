@@ -1,7 +1,11 @@
 import DownloadPanel from "../../io/DownloadPanel";
 import type { DefaultGraphFormState } from "../../../hooks/useDefaultGraphForm";
 
-const DefaultGraphForm = ({formState}: {formState: DefaultGraphFormState}) => {
+const DefaultGraphForm = ({
+  formState,
+}: {
+  formState: DefaultGraphFormState;
+}) => {
   return (
     <>
       <form className="w-2/3 mt-4" onSubmit={(e) => formState.handleSubmit(e)}>
@@ -63,7 +67,7 @@ const DefaultGraphForm = ({formState}: {formState: DefaultGraphFormState}) => {
           <button
             type="submit"
             disabled={!formState.parameters.areParamsValid()}
-            className="focus:outline-none text-white bg-green-700 hover:bg-green-800 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 mt-4"
+            className="px-5 py-2.5 me-2 mb-2 mt-4 text-white text-sm font-medium rounded-lg bg-green-700 cursor-pointer disabled:opacity-50 disabled:pointer-events-none hover:bg-green-800"
           >
             Generate
           </button>

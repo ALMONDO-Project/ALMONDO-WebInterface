@@ -7,13 +7,14 @@ import {
 import useGraphState from "../../../stores/graphStore";
 import useMonitorState from "../../../stores/monitorStore";
 import type CompleteGraphParams from "../model/CompleteGraphParams";
+import type WSGraphParams from "../model/WSGraphParams";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 export type DefaultGraphFormState = {
   graphType: string;
   handleGraphTypeChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-  parameters: CompleteGraphParams;
+  parameters: CompleteGraphParams | WSGraphParams;
   handleParameterChange: (paramLabel: string, newValue: number) => void;
   handleSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void>;
 };

@@ -24,7 +24,7 @@ export default class CompleteGraphParams {
   }
 
   areParamsValid() {
-    this.getParams().every(p => p.isValid());
+    return this.getParams().every(p => p.isValid());
   }
 
   getParams() {
