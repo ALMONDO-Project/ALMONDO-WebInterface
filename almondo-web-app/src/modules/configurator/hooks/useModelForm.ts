@@ -1,6 +1,6 @@
 import useMonitorState from "../../../stores/monitorStore";
 import useModelStore from "../../../stores/modelStore";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export type ModelParams = {
   statusType: "uniform" | "unbiased" | "gaussian_mixture" | "user_defined";
@@ -12,7 +12,7 @@ export type ModelParams = {
   pessimisticProbability: number;
   lambda: number | number[];
   phi: number | number[];
-  seed: number;
+  seed: number | undefined;
 };
 
 export type ModelFormState = {
@@ -27,6 +27,7 @@ export type ModelFormState = {
 };
 
 export const useModelForm = () => {
+  const modelSeed = useModelStore((state) => state.modelSeed);
   const [parameters, setParameters] = useState<ModelParams>({
     statusType: "uniform",
     minUniformRange: 0.1,
@@ -37,12 +38,15 @@ export const useModelForm = () => {
     pessimisticProbability: 0.99,
     lambda: 0.2,
     phi: 0.5,
-    seed: 42,
+    seed: modelSeed,
   });
+
+  useEffect(() => {
+    setParameters({...parameters, seed: modelSeed});
+  }, [modelSeed]);
 
   const updateOP = useModelStore((state) => state.updateOptimisticProbability);
   const updatePP = useModelStore((state) => state.updatePessimisticProbability);
-  const updateSeed = useModelStore((state) => state.updateSeed);
   const updateLambda = useModelStore((state) => state.updateLambda);
   const updatePhi = useModelStore((state) => state.updatePhi);
   const updateInitialStatus = useModelStore(
@@ -142,7 +146,6 @@ export const useModelForm = () => {
 
     const initialStatus = getInitialStatus();
 
-    updateSeed(parameters.seed);
     updateOP(parameters.optimisticProbability);
     updatePP(parameters.pessimisticProbability);
     updateLambda(parameters.lambda);

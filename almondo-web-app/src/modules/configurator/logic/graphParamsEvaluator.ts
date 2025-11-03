@@ -3,12 +3,11 @@ import CompleteGraphParams from "../model/CompleteGraphParams";
 import ERGraphParams from "../model/ERGraphParams";
 import WSGraphParams from "../model/WSGraphParams";
 
-const defaultParameters = new Map([
-  ["Erdős-Rényi", new ERGraphParams(1000, 0.1)],
-  ["Watts-Strogatz", new WSGraphParams(1000, 0.1, 4)],
-  ["Barabási-Albert", new BAGraphParams(1000, 2)],
-  ["Complete graph", new CompleteGraphParams(1000)]
-]);
+const defaultParameters: Map<string, CompleteGraphParams | WSGraphParams> = new Map();
+defaultParameters.set("Erdős-Rényi", new ERGraphParams(1000, 0.1));
+defaultParameters.set("Watts-Strogatz", new WSGraphParams(1000, 0.1, 4));
+defaultParameters.set("Barabási-Albert", new BAGraphParams(1000, 2));
+defaultParameters.set("Complete graph", new CompleteGraphParams(1000));
 
 export const getDefaultParamsByGraphType = (type: string) => {
   return defaultParameters.get(type);

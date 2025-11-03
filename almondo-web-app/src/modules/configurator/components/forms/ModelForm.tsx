@@ -124,11 +124,10 @@ const ModelForm = ({ formState }: { formState: ModelFormState }) => {
             Seed
           </label>
           <input
-            type="number"
+            type="text"
             id="model-seed-input"
-            min={0}
-            value={formState.parameters.seed}
-            onChange={(e) => formState.handleParameterChange("seed", e)}
+            value={formState.parameters.seed === undefined ? "Not specified" : String(formState.parameters.seed)}
+            readOnly
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
           ></input>
           <div className="flex flex-row">

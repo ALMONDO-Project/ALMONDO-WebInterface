@@ -23,18 +23,43 @@ const DefaultGraphForm = ({
           <option value="Barabási-Albert">Barabási-Albert</option>
           <option value="Complete graph">Complete graph</option>
         </select>
-        <div className="py-3 flex items-center text-base before:flex-1 before:border-t before:border-gray-200 before:me-6 after:flex-1 after:border-t after:border-gray-200 after:ms-6 dark:text-white dark:before:border-neutral-600 dark:after:border-neutral-600">
+        <div className="py-3 flex items-center text-base before:flex-1 before:border-t before:border-gray-200 before:me-6 after:flex-1 after:border-t after:border-gray-200 after:ms-6">
           Parameters
         </div>
         {formState.parameters.getParams().map((parameter) => (
           <div key={parameter.label} className="mb-5">
+            {formState.isSeedEditable !== null &&
+              parameter.label === "Seed" && (
+                <div className="flex items-center gap-x-3 mb-2">
+                  <label
+                    htmlFor="hs-xs-switch"
+                    className="relative inline-block w-9 h-5 cursor-pointer"
+                  >
+                    <input
+                      type="checkbox"
+                      id="hs-xs-switch"
+                      checked={formState.isSeedEditable}
+                      onChange={() => formState.handleSeedEditSwitch()}
+                      className="peer sr-only"
+                    />
+                    <span className="absolute inset-0 bg-gray-200 rounded-full transition-colors duration-200 ease-in-out peer-checked:bg-blue-600 dark:bg-neutral-700 dark:peer-checked:bg-blue-500 peer-disabled:opacity-50 peer-disabled:pointer-events-none" />
+                    <span className="absolute top-1/2 start-0.5 -translate-y-1/2 size-4 bg-white rounded-full shadow-xs transition-transform duration-200 ease-in-out peer-checked:translate-x-full dark:bg-neutral-400 dark:peer-checked:bg-white" />
+                  </label>
+                  <label
+                    htmlFor="hs-xs-switch"
+                    className="text-sm text-gray-500 dark:text-neutral-400"
+                  >
+                    Edit Seed
+                  </label>
+                </div>
+              )}
             <label className="block mb-2 text-sm font-medium text-gray-900">
               {parameter.label}
             </label>
             <input
               className={`bg-gray-50 border ${
                 parameter.isValid() ? "border-gray-300" : "border-red-500"
-              } text-gray-900 text-sm rounded-lg block w-full p-2.5`}
+              } text-gray-900 text-sm rounded-lg block w-full p-2.5 disabled:opacity-50 disabled:pointer-events-none`}
               type="number"
               step={
                 parameter.label === "Probability" ||
@@ -42,6 +67,7 @@ const DefaultGraphForm = ({
                   ? 0.1
                   : 1
               }
+              disabled={formState.isSeedEditable === false && parameter.label === "Seed"}
               value={parameter.value}
               onChange={(e) =>
                 formState.handleParameterChange(
