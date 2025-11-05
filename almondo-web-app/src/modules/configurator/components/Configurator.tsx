@@ -29,23 +29,23 @@ const Configurator = () => {
       case 1:
         return <LobbyistForm />;
       case 2:
-        return <ModelForm formState={modelFormState}/>;
+        return <ModelForm formState={modelFormState} />;
       case 3:
-        return <SimulationForm formState={simulationFormState}/>;
+        return <SimulationForm formState={simulationFormState} />;
     }
   };
 
   return (
-    <>
+    <div className="h-full flex flex-col">
       <Stepper steps={steps} current={currentStep} />
-      {getCurrentForm()}
+      <div className="flex-1 min-h-0">{getCurrentForm()}</div>
       <Controls
         steps={steps}
         currentStep={currentStep}
         next={navigateNext}
         previous={navigatePrevious}
       />
-    </>
+    </div>
   );
 };
 

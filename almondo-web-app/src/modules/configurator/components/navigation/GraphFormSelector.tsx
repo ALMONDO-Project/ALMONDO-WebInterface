@@ -14,9 +14,9 @@ const GraphFormSelector = ({
   const { selected, handleFormChange } = useSelectedFormState();
 
   return (
-    <div className="flex flex-col items-center h-3/4 mt-8">
+    <div className="flex flex-col items-center h-full mt-8">
       <h1 className="font-medium text-2xl">Configure Graph</h1>
-      <div className="w-full">
+      <div className="w-full flex flex-col flex-1 min-h-0">
         <ul className="flex flex-row justify-center mt-4">
           <div
             className={`border-b px-2 ${
@@ -47,7 +47,7 @@ const GraphFormSelector = ({
             </li>
           </div>
         </ul>
-        <div className="mt-8 flex flex-col items-center">
+        <div className="mt-8 flex flex-col items-center overflow-y-auto flex-1 pb-16">
           {selected === "default" ? (
             <DefaultGraphForm formState={defaultFormState} />
           ) : (

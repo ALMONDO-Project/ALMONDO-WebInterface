@@ -30,14 +30,14 @@ export const useModelForm = () => {
   const modelSeed = useModelStore((state) => state.modelSeed);
   const [parameters, setParameters] = useState<ModelParams>({
     statusType: "uniform",
-    minUniformRange: 0.1,
-    maxUniformRange: 0.8,
+    minUniformRange: 0,
+    maxUniformRange: 1,
     unbiasedValue: undefined,
     status: undefined,
     optimisticProbability: 0.01,
     pessimisticProbability: 0.99,
-    lambda: 0.2,
-    phi: 0.5,
+    lambda: 0,
+    phi: 0,
     seed: modelSeed,
   });
 
@@ -62,8 +62,8 @@ export const useModelForm = () => {
         setParameters({
           ...parameters,
           statusType: "uniform",
-          minUniformRange: 0.1,
-          maxUniformRange: 0.8,
+          minUniformRange: 0,
+          maxUniformRange: 1,
           unbiasedValue: undefined,
           status: undefined,
         });
@@ -72,7 +72,7 @@ export const useModelForm = () => {
         setParameters({
           ...parameters,
           statusType: "unbiased",
-          unbiasedValue: 0.1,
+          unbiasedValue: 0.5,
           minUniformRange: undefined,
           maxUniformRange: undefined,
           status: undefined,
@@ -108,38 +108,6 @@ export const useModelForm = () => {
   ) => {
     setParameters({ ...parameters, [paramName]: e.target.valueAsNumber });
   };
-
-  // const handleMinUniformRangeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   setParameters({...parameters, minUniformRange: e.target.valueAsNumber});
-  // }
-
-  // const handleMaxUniformRangeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   setParameters({...parameters, maxUniformRange: e.target.valueAsNumber});
-  // }
-
-  // const handleUnbiasedValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   setParameters({...parameters, unbiasedValue: e.target.valueAsNumber});
-  // }
-
-  // const handleOptimisticChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   setParameters({...parameters, optimisticProbability: e.target.valueAsNumber});
-  // }
-
-  // const handlePessimisticChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   setParameters({...parameters, pessimisticProbability: e.target.valueAsNumber});
-  // }
-
-  // const handleLambdaChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   setParameters({...parameters, lambda: e.target.valueAsNumber});
-  // }
-
-  // const handlePhiChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   setParameters({...parameters, phi: e.target.valueAsNumber});
-  // }
-
-  // const handleSeedChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   setParameters({...parameters, seed: e.target.valueAsNumber});
-  // }
 
   const handleModelConfig = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

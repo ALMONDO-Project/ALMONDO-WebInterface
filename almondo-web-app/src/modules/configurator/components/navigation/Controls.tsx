@@ -34,7 +34,7 @@ const Controls = ({
   }
 
   return (
-    <div className="flex flex-row justify-around p-2">
+    <div className="flex flex-row justify-around p-2 bg-white">
       {currentStep > 0 && <ControlButton text="Previous" action={previous} />}
       {currentStep < steps.length &&
         (currentStep === steps.length - 1 ? (
