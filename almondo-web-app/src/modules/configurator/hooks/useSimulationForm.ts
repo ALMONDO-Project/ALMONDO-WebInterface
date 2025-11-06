@@ -76,7 +76,11 @@ export const useSimulationForm = () => {
 
     formData.append("lambdaValue", modelState.lambda!.toString());
     formData.append("phiValue", modelState.phi!.toString());
-    formData.append("modelSeed", modelState.modelSeed.toString());
+    
+    if(modelState.modelSeed) {
+      formData.append("modelSeed", modelState.modelSeed.toString());
+    }
+    
     formData.append(
       "n_lobbyists",
       modelState.lobbyistsState.numberOfLobbyists.toString()
