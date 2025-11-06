@@ -1,12 +1,22 @@
-import CompleteGraphParams from "./CompleteGraphParams";
 import GraphParam from "./GraphParam";
 
-export default class WSGraphParams extends CompleteGraphParams {
+export default class WSGraphParams {
+  private _numOfAgents: GraphParam;
   private _kNeighbors: GraphParam;
   private _probability: GraphParam;
+  private _seed: GraphParam;
 
-  constructor(numOfAgents: number, probability: number, kNeighbors: number) {
-    super(numOfAgents);
+  constructor(
+    numOfAgents: number,
+    probability: number,
+    kNeighbors: number,
+    seed: number = 42
+  ) {
+    this._numOfAgents = new GraphParam(
+      "Number of Agents",
+      numOfAgents,
+      () => numOfAgents >= 100 && numOfAgents <= 10000
+    );
     this._probability = new GraphParam(
       "Rewiring Probability",
       probability,
@@ -20,15 +30,15 @@ export default class WSGraphParams extends CompleteGraphParams {
         kNeighbors % 2 === 0 &&
         kNeighbors <= Math.floor(numOfAgents * 0.1)
     );
+    this._seed = new GraphParam("Seed", seed, () => seed > 0);
   }
 
   updateParam(label: string, newValue: number) {
     const updatedParams = new WSGraphParams(
-      super
-        .getParams()
-        .find((param) => param.label === "Number of Agents")!.value,
+      this._numOfAgents.value,
       this._probability.value,
-      this._kNeighbors.value
+      this._kNeighbors.value,
+      this._seed.value
     );
     const parameter = updatedParams
       .getParams()
@@ -45,11 +55,10 @@ export default class WSGraphParams extends CompleteGraphParams {
         validatorFunction = () =>
           newValue >= 2 &&
           newValue % 2 === 0 &&
-          newValue <=
-            0.1 *
-              super
-                .getParams()
-                .find((param) => param.label === "Number of Agents")!.value;
+          newValue <= this._numOfAgents.value;
+        break;
+      case "Seed":
+        validatorFunction = () => newValue > 0;
         break;
       default:
         throw new Error(`No such param: ${label}`);
@@ -60,7 +69,11 @@ export default class WSGraphParams extends CompleteGraphParams {
     return updatedParams;
   }
 
+  areParamsValid() {
+    return this.getParams().every((p) => p.isValid());
+  }
+
   getParams(): GraphParam[] {
-    return super.getParams().concat(this._kNeighbors, this._probability);
+    return [this._numOfAgents, this._kNeighbors, this._probability, this._seed];
   }
 }

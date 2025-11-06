@@ -7,7 +7,7 @@ export default class CompleteGraphParams {
     this._numOfAgents = new GraphParam(
       "Number of Agents",
       numOfAgents,
-      () => numOfAgents >= 100 && numOfAgents <= 10000
+      () => numOfAgents >= 2 && numOfAgents <= 10000
     );
   }
 
@@ -18,16 +18,13 @@ export default class CompleteGraphParams {
       .getParams()
       .find((param) => param.label === label)!;
     parameter.value = newValue;
-    parameter.validatorFun = () => newValue >= 100 && newValue <= 10000;
+    parameter.validatorFun = () => newValue >= 2 && newValue <= 10000;
 
     return updatedParams;
   }
 
   areParamsValid() {
-    const allParams = this.getParams();
-    return (
-      allParams.filter((param) => param.isValid()).length === allParams.length
-    );
+    return this.getParams().every(p => p.isValid());
   }
 
   getParams() {

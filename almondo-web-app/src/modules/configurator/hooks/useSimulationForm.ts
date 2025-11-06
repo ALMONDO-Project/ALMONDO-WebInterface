@@ -10,7 +10,15 @@ type Parameters = {
   iterations: number | undefined;
 };
 
-export const useSimulationParams = () => {
+export type SimulationFormState = {
+  parameters: Parameters;
+  handleTypeChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  handleIterationsChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleRun: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
+  handleContinue: (sim_id: string) => Promise<void>;
+}
+
+export const useSimulationForm = () => {
   const [parameters, setParameters] = useState<Parameters>({
     simulationType: "iteration-bunch",
     iterations: 100,
@@ -32,7 +40,7 @@ export const useSimulationParams = () => {
     setParameters({ ...parameters, iterations: e.target.valueAsNumber });
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleRun = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     addMessage({
@@ -138,7 +146,7 @@ export const useSimulationParams = () => {
     parameters,
     handleTypeChange,
     handleIterationsChange,
-    handleSubmit,
+    handleRun,
     handleContinue,
   };
 };
