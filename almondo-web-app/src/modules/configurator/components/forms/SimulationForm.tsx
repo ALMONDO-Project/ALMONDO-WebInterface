@@ -1,11 +1,8 @@
 import useSimulationState from "../../../../stores/simulationStore";
 import { type SimulationFormState } from "../../hooks/useSimulationForm";
-import { useSimulationsIDsState } from "../../hooks/useSimulationsIDsState";
 
 const SimulationForm = ({formState} : {formState: SimulationFormState}) => {
   const { parameters, handleTypeChange, handleIterationsChange, handleRun, handleContinue } = formState;
-  const { IDs, handleIdSelection, selectedId, handleSimulationLoad } =
-    useSimulationsIDsState();
   const sim_id = useSimulationState(state => state.simID)
 
   return (
@@ -62,34 +59,6 @@ const SimulationForm = ({formState} : {formState: SimulationFormState}) => {
             className="focus:outline-none text-white bg-green-700 disabled:bg-gray-200 hover:bg-green-800 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 mt-4"
           >
             Continue
-          </button>
-        </div>
-      </form>
-      <form className="w-2/3 mt-8" onSubmit={handleSimulationLoad}>
-        <label
-          htmlFor="load-simulation"
-          className="block mt-4 mb-2 text-base font-normal"
-        >
-          Choose simulation
-        </label>
-        <select
-          id="load-simulation"
-          onChange={(e) => handleIdSelection(e)}
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
-        >
-          {IDs.map((id) => (
-            <option key={id} value={id}>
-              {id}
-            </option>
-          ))}
-        </select>
-        <div className="flex justify-center mt-8">
-          <button
-            type="submit"
-            disabled={selectedId === ""}
-            className="focus:outline-none text-white bg-green-700 disabled:bg-gray-200 hover:bg-green-800 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 mt-4"
-          >
-            Load
           </button>
         </div>
       </form>

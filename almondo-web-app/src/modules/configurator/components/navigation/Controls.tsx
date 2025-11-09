@@ -26,11 +26,11 @@ const Controls = ({
   };
 
   if (graphNodes !== undefined) {
-    steps[0].makeCompletable();
+    steps[1].makeCompletable();
   }
 
   if (isValidModelState()) {
-    steps[2].makeCompletable();
+    steps[3].makeCompletable();
   }
 
   return (

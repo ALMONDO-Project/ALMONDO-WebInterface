@@ -17,7 +17,7 @@ const CustomGraphForm = ({
         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
       >
         <option value="edgelist">Edge List</option>
-        <option value="matrix">Adjacency matrix</option>
+        <option value="adjacency_matrix">Adjacency matrix</option>
       </select>
       <label className="block mt-4 mb-2 text-lg font-medium">
         Upload{" "}

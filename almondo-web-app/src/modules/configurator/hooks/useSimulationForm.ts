@@ -2,6 +2,7 @@ import useMonitorState from "../../../stores/monitorStore";
 import useModelStore from "../../../stores/modelStore";
 import { useState } from "react";
 import useSimulationState from "../../../stores/simulationStore";
+import useGraphState from "../../../stores/graphStore";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -24,6 +25,7 @@ export const useSimulationForm = () => {
     iterations: 100,
   });
 
+  const graphState = useGraphState((state) => state);
   const modelState = useModelStore((state) => state);
   const addMessage = useMonitorState((state) => state.addMessage);
   const updateSimulationResults = useSimulationState(
@@ -50,6 +52,8 @@ export const useSimulationForm = () => {
     });
 
     const formData = new FormData();
+    formData.append("graph_type", graphState.graph!.type);
+    formData.append("graph_params", JSON.stringify(graphState.graph?.parameters));
     formData.append("po", modelState.optimisticProbability.toString());
     formData.append("po", modelState.pessimisticProbability.toString());
 
