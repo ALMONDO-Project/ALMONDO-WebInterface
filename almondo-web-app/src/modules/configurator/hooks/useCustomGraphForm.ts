@@ -36,13 +36,9 @@ export const useCustomGraphForm = () => {
     });
 
     const formData = new FormData();
-    formData.append(
-      "graphType",
-      format === "edgelist" ? "edgelist" : "adjacency_matrix"
-    );
-    const filename =
-      format === "edgelist" ? "uploaded_edgelist" : "uploaded_adjacency_matrix";
-    formData.append(filename, file!);
+
+    formData.append("graphType", format);
+    formData.append("uploaded_" + format, file!);
 
     const response = await fetch(`${BACKEND_URL}/generate-graph`, {
       method: "POST",

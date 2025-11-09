@@ -9,6 +9,7 @@ import GraphFormSelector from "./navigation/GraphFormSelector";
 import { useCustomGraphForm } from "../hooks/useCustomGraphForm";
 import { useModelForm } from "../hooks/useModelForm";
 import { useSimulationForm } from "../hooks/useSimulationForm";
+import LoadSimulationPanel from "./forms/LoadSimulationPanel";
 
 const Configurator = () => {
   const { steps, currentStep, navigateNext, navigatePrevious } = useSteps();
@@ -21,16 +22,22 @@ const Configurator = () => {
     switch (currentStep) {
       case 0:
         return (
+          <LoadSimulationPanel
+            onDefaultGraphLoad={defaultGraphFormState.handleGraphLoad}
+          />
+        );
+      case 1:
+        return (
           <GraphFormSelector
             defaultFormState={defaultGraphFormState}
             customFormState={customGraphFormState}
           />
         );
-      case 1:
-        return <LobbyistForm />;
       case 2:
-        return <ModelForm formState={modelFormState} />;
+        return <LobbyistForm />;
       case 3:
+        return <ModelForm formState={modelFormState} />;
+      case 4:
         return <SimulationForm formState={simulationFormState} />;
     }
   };

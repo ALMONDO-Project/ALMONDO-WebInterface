@@ -3,20 +3,24 @@ import CompleteGraphParams from "../model/CompleteGraphParams";
 import ERGraphParams from "../model/ERGraphParams";
 import WSGraphParams from "../model/WSGraphParams";
 
-const defaultParameters: Map<string, CompleteGraphParams | WSGraphParams> = new Map();
-defaultParameters.set("Erdős-Rényi", new ERGraphParams(1000, 0.1));
-defaultParameters.set("Watts-Strogatz", new WSGraphParams(1000, 0.1, 4));
-defaultParameters.set("Barabási-Albert", new BAGraphParams(1000, 2));
-defaultParameters.set("Complete graph", new CompleteGraphParams(1000));
+const defaultParameters: Map<string, CompleteGraphParams | WSGraphParams> =
+  new Map();
+defaultParameters.set("erdos_renyi", new ERGraphParams(1000, 0.1));
+defaultParameters.set("watts_strogatz", new WSGraphParams(1000, 0.1, 4));
+defaultParameters.set("barabasi_albert", new BAGraphParams(1000, 2));
+defaultParameters.set("complete_graph", new CompleteGraphParams(1000));
 
 export const getDefaultParamsByGraphType = (type: string) => {
   return defaultParameters.get(type);
 };
 
-export const graphToFormParameters = (graphType: string, paramLabel: string): string => {
-  switch(paramLabel) {
+export const graphToFormParameters = (
+  graphType: string,
+  paramLabel: string
+): string => {
+  switch (paramLabel) {
     case "Number of Agents":
-      return graphType === "Complete graph" ? "n" : "nodes"
+      return graphType === "complete_graph" ? "n" : "nodes";
     case "Probability":
       return "prob";
     case "Rewiring Probability":
@@ -28,19 +32,28 @@ export const graphToFormParameters = (graphType: string, paramLabel: string): st
     default:
       throw new Error("Error transforming form parameter");
   }
-}
+};
 
-export const graphTypeNameFormatter = (graphType: string): string => {
-  switch(graphType) {
-    case "Erdős-Rényi":
-      return "erdos_renyi";
-    case "Watts-Strogatz":
-      return "watts_strogatz";
-    case "Barabási-Albert":
-      return "barabasi_albert";
-    case "Complete graph":
-      return "complete_graph";
+export const createGraphParams = (
+  graphType: string,
+  params: [string, number][]
+): CompleteGraphParams | WSGraphParams => {
+  switch (graphType) {
+    case "erdos_renyi":
+      console.log("agents:", params[0][1]);
+      return new ERGraphParams(params[0][1], params[1][1], params[2][1]);
+    case "watts_strogatz":
+      return new WSGraphParams(
+        params[0][1],
+        params[1][1],
+        params[2][1],
+        params[3][1]
+      );
+    case "barabasi_albert":
+      return new BAGraphParams(params[0][1], params[1][1], params[2][1]);
+    case "complete_graph":
+      return new CompleteGraphParams(params[0][1]);
     default:
-      throw new Error("Error on graph type formatting.");
+      throw new Error(`Graph type "${graphType}" doesn't exists`);
   }
-}
+};

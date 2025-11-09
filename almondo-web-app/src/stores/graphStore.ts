@@ -11,23 +11,30 @@ type Edge = {
 
 export type Graph = {
   type: string;
+  parameters: [string, number][];
   nodes: Node[];
   edges: Edge[];
 };
 
 type GraphState = {
   graph: Graph | null;
-  updateGraph: (type: string, nodes: Node[], edges: Edge[]) => void;
+  updateGraph: (
+    type: string,
+    nodes: Node[],
+    edges: Edge[],
+    parameters?: [string, number][],
+  ) => void;
 };
 
 const useGraphState = create<GraphState>()((set) => ({
   graph: null,
-  updateGraph: (type, nodes, edges) =>
+  updateGraph: (type, nodes, edges, parameters = []) =>
     set(() => ({
       graph: {
         type: type,
         nodes: nodes,
         edges: edges,
+        parameters: parameters,
       },
     })),
 }));

@@ -2,7 +2,7 @@ import { useState, useEffect, type FormEvent } from "react";
 import {
   getDefaultParamsByGraphType,
   graphToFormParameters,
-  graphTypeNameFormatter,
+  createGraphParams
 } from "../logic/graphParamsEvaluator";
 import useGraphState from "../../../stores/graphStore";
 import useMonitorState from "../../../stores/monitorStore";
@@ -23,27 +23,36 @@ export type DefaultGraphFormState = {
 };
 
 export const useDefaultGraphForm = () => {
-  const [graphType, setGraphType] = useState("Erdős-Rényi");
+  const [graphForm, setGraphForm] = useState({
+    type: "erdos_renyi",
+    parameters: getDefaultParamsByGraphType("erdos_renyi")!,
+  });
   const [isSeedEditable, setIsSeedEditable] = useState(
-    graphType !== "Complete Graph" ? false : null
-  );
-  const [parameters, setParameters] = useState(
-    () => getDefaultParamsByGraphType(graphType)!
+    graphForm.type !== "complete_graph" ? false : null
   );
   const updateGraph = useGraphState((state) => state.updateGraph);
   const addMessage = useMonitorState((state) => state.addMessage);
   const updateModelSeed = useModelStore((state) => state.updateSeed);
 
-  useEffect(() => {
-    setParameters(() => getDefaultParamsByGraphType(graphType)!);
-  }, [graphType]);
-
   const handleParameterChange = (paramLabel: string, newValue: number) => {
-    setParameters(parameters.updateParam(paramLabel, newValue));
+    setGraphForm(prevGraphForm => ({
+      ...prevGraphForm,
+      parameters: prevGraphForm.parameters?.updateParam(paramLabel, newValue)
+    }));
   };
 
+  const handleGraphLoad = (graphType: string, params: [string, number][]) => {
+    setGraphForm({
+      type: graphType,
+      parameters: createGraphParams(graphType, params)
+    });
+  }
+
   const handleGraphTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setGraphType(e.target.value);
+    setGraphForm({
+      type: e.target.value,
+      parameters: getDefaultParamsByGraphType(e.target.value)!
+    });
   };
 
   const handleSeedEditSwitch = () => {
@@ -60,18 +69,18 @@ export const useDefaultGraphForm = () => {
     });
 
     const formData = new FormData();
-    formData.append("graphType", graphTypeNameFormatter(graphType));
-    parameters.getParams().forEach((param) => {
+    formData.append("graphType", graphForm.type);
+    graphForm.parameters.getParams().forEach((param) => {
       if (param.label === "Seed") {
         if (isSeedEditable) {
           formData.append("seed", String(param.value));
           updateModelSeed(param.value);
         } else {
           updateModelSeed(undefined);
-        };
+        }
       } else {
         formData.append(
-          graphToFormParameters(graphType, param.label),
+          graphToFormParameters(graphForm.type, param.label),
           String(param.value)
         );
       }
@@ -85,7 +94,11 @@ export const useDefaultGraphForm = () => {
     const data = await response.json();
 
     if (response.ok) {
-      updateGraph(graphTypeNameFormatter(graphType), data.nodes, data.links);
+      const type = graphForm.type;
+      const params: [string, number][] = graphForm.parameters
+        .getParams()
+        .map((p) => [p.label, p.value]);
+      updateGraph(type, data.nodes, data.links, params);
     }
 
     addMessage({
@@ -96,11 +109,12 @@ export const useDefaultGraphForm = () => {
   };
 
   return {
-    graphType,
+    graphType: graphForm.type,
+    handleGraphLoad,
     isSeedEditable,
     handleGraphTypeChange,
     handleSeedEditSwitch,
-    parameters,
+    parameters: graphForm.parameters,
     handleParameterChange,
     handleSubmit,
   };

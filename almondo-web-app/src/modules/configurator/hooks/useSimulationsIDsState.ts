@@ -5,7 +5,11 @@ import { useEffect, useState } from "react";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
-export const useSimulationsIDsState = () => {
+export const useSimulationsIDsState = ({
+  onDefaultGraphLoad,
+}: {
+  onDefaultGraphLoad: (graphType: string, params: [string, number][]) => void;
+}) => {
   const [IDs, setIDs] = useState([]);
   const [selectedId, setSelectedId] = useState("");
   const updateSimID = useSimulationState((state) => state.updateSimID);
@@ -21,7 +25,10 @@ export const useSimulationsIDsState = () => {
   useEffect(() => {
     fetch(`${BACKEND_URL}/simulations-ids`)
       .then((response) => response.json())
-      .then((data) => setIDs(data))
+      .then((data) => {
+        setIDs(data);
+        if (data.length !== 0) setSelectedId(data[0]);
+      })
       .catch((err) => console.error(err));
   }, []);
 
@@ -43,7 +50,17 @@ export const useSimulationsIDsState = () => {
     if (response.status === 200) {
       const data = await response.json();
 
-      updateGraph('edgelist', data.nodes, data.links);
+      updateGraph(
+        data.sim_params.graph_type,
+        data.nodes,
+        data.links,
+        data.sim_params.graph_params
+      );
+
+      console.log("Received parameters:", data.sim_params.graph_params);
+
+      onDefaultGraphLoad(data.sim_params.graph_type, data.sim_params.graph_params);
+
       updateSeed(data.sim_params.model_seed);
       updateOP(data.sim_params.p_o);
       updatePP(data.sim_params.p_p);
