@@ -1,6 +1,6 @@
 import { useSimulationsIDsState } from "../../hooks/useSimulationsIDsState";
 
-const LoadSimulationPanel = ({
+const LoadSimulationForm = ({
   onDefaultGraphLoad,
 }: {
   onDefaultGraphLoad: (graphType: string, params: [string, number][]) => void;
@@ -47,4 +47,4 @@ const LoadSimulationPanel = ({
   );
 };
 
-export default LoadSimulationPanel;
+export default LoadSimulationForm;
