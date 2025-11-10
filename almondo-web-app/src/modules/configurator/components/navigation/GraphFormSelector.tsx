@@ -47,7 +47,14 @@ const GraphFormSelector = ({
             </li>
           </div>
         </ul>
-        <div className="mt-8 flex flex-col items-center overflow-y-auto flex-1 pb-16">
+        <div
+          className="mt-8 flex flex-col items-center overflow-y-auto flex-1 pb-16 
+                [&::-webkit-scrollbar]:w-2
+                [&::-webkit-scrollbar-track]:rounded-full
+                [&::-webkit-scrollbar-track]:bg-gray-100
+                [&::-webkit-scrollbar-thumb]:rounded-full
+                [&::-webkit-scrollbar-thumb]:bg-gray-300"
+        >
           {selected === "default" ? (
             <DefaultGraphForm formState={defaultFormState} />
           ) : (

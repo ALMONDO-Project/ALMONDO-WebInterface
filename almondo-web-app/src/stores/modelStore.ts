@@ -5,7 +5,7 @@ type LobbyistState = {
     data: LobbyistsData,
 }
 
-type LobbyistData = {
+export type LobbyistData = {
     id: number,
     m: number,
     B?: number,
@@ -40,6 +40,7 @@ type ModelState = {
     updateSeed: (s: number | undefined) => void,
     updateInitialStatus: (status: InitialStatus) => void,
     addLobbyist: (lobbyistData: LobbyistData) => void,
+    deleteLobbyist: (lobbyistId: number) => void,
     updateLobbyistsState: (lobbyist: LobbyistState) => void
 }
 
@@ -63,6 +64,10 @@ const useModelStore = create<ModelState>()((set) => ({
     addLobbyist: (lobbyistData) => set((state) => ({lobbyistsState: {
         numberOfLobbyists: state.lobbyistsState.numberOfLobbyists + 1,
         data: state.lobbyistsState.data.concat(lobbyistData),
+    }})),
+    deleteLobbyist: (lobbyistId) => set((state) => ({lobbyistsState: {
+        numberOfLobbyists: state.lobbyistsState.numberOfLobbyists - 1,
+        data: state.lobbyistsState.data.filter(l => l.id !== lobbyistId)
     }})),
     updateLobbyistsState: (lobbyists) => set(() => ({lobbyistsState: lobbyists}))
 }))
