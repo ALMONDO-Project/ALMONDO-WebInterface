@@ -1,6 +1,7 @@
 import useMonitorState from "../../../stores/monitorStore";
 import useModelStore from "../../../stores/modelStore";
 import { useEffect, useState } from "react";
+import useSimulationState from "../../../stores/simulationStore";
 
 export type ModelParams = {
   statusType: "uniform" | "unbiased" | "gaussian_mixture" | "user_defined";
@@ -28,6 +29,7 @@ export type ModelFormState = {
 
 export const useModelForm = () => {
   const model = useModelStore((state) => state);
+  const {simID, resetSimState} = useSimulationState((state) => state);
 
   const [parameters, setParameters] = useState<ModelParams>({
     statusType: model.initialStatus.type,
@@ -131,6 +133,10 @@ export const useModelForm = () => {
     updateLambda(parameters.lambda);
     updatePhi(parameters.phi);
     updateInitialStatus(initialStatus);
+
+    if(simID) {
+      resetSimState();
+    }
 
     addMessage({
       type: "success",

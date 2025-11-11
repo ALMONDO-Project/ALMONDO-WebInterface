@@ -9,6 +9,7 @@ import useMonitorState from "../../../stores/monitorStore";
 import type CompleteGraphParams from "../model/CompleteGraphParams";
 import type WSGraphParams from "../model/WSGraphParams";
 import useModelStore from "../../../stores/modelStore";
+import useSimulationState from "../../../stores/simulationStore";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -23,6 +24,7 @@ export type DefaultGraphFormState = {
 };
 
 export const useDefaultGraphForm = () => {
+  const {simID, resetSimState} = useSimulationState((state) => state);
   const [graphForm, setGraphForm] = useState({
     type: "erdos_renyi",
     parameters: getDefaultParamsByGraphType("erdos_renyi")!,
@@ -99,6 +101,10 @@ export const useDefaultGraphForm = () => {
         .getParams()
         .map((p) => [p.label, p.value]);
       updateGraph(type, data.nodes, data.links, params);
+      
+      if(simID) {
+        resetSimState();
+      }
     }
 
     addMessage({

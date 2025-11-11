@@ -1,6 +1,7 @@
 import useMonitorState from "../../../stores/monitorStore";
 import useGraphState from "../../../stores/graphStore";
 import { useState } from "react";
+import useSimulationState from "../../../stores/simulationStore";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -17,6 +18,7 @@ export const useCustomGraphForm = () => {
   const [file, setFile] = useState<Blob | null>(null);
   const updateGraph = useGraphState((state) => state.updateGraph);
   const addMessage = useMonitorState((state) => state.addMessage);
+  const {simID, resetSimState} = useSimulationState((state) => state);
 
   const handleFormatSelection = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setFormat(e.target.value);
@@ -49,6 +51,10 @@ export const useCustomGraphForm = () => {
 
     if (response.ok) {
       updateGraph(format, data.nodes, data.links);
+
+      if(simID) {
+        resetSimState();
+      }
     }
 
     addMessage({
