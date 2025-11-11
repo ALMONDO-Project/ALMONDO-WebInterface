@@ -164,7 +164,6 @@ const Conformity = ({
   }
 
   const distributionOptions = {
-    responsive: true,
     plugins: {
       legend: {
         position: "top" as const,
@@ -175,7 +174,7 @@ const Conformity = ({
           results[results.length - 1].iteration
         }`,
         font: {
-          size: 18,
+          size: 20,
           weight: "bold" as const,
         },
       },
@@ -186,8 +185,8 @@ const Conformity = ({
           display: true,
           text: "Conformity Score Interval",
           font: {
-            weight: "bold" as const,
-          },
+            size: 14,
+          }
         },
         ticks: {
           autoSkip: true,
@@ -199,8 +198,8 @@ const Conformity = ({
           display: true,
           text: "% Agents",
           font: {
-            weight: "bold" as const,
-          },
+            size: 14,
+          }
         },
         beginAtZero: true,
       },

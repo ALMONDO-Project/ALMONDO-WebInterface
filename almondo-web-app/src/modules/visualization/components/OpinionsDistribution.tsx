@@ -55,13 +55,41 @@ const OpinionsDistribution = ({ results }: { results: SimulationResults }) => {
   const distributionOptions = {
     plugins: {
       legend: {
-        position: "top" as const,
+        display: false,
       },
       title: {
         display: true,
         text: `Agents opinions distribution: iteration ${
           results[results.length - 1].iteration
         }`,
+        font: {
+          size: 20,
+          weight: "bold" as const,
+        },
+        padding: {
+          bottom: 20,
+        }
+      },
+    },
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: "Opinion intervals",
+          font: {
+            size: 14,
+          }
+        },
+      },
+      y: {
+        title: {
+          display: true,
+          text: "% Agents",
+          font: {
+            size: 14,
+          }
+        },
+        beginAtZero: true,
       },
     },
   };
