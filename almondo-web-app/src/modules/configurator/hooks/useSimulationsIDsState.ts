@@ -51,8 +51,6 @@ export const useSimulationsIDsState = ({
     if (response.status === 200) {
       const data = await response.json();
 
-      console.log("Load simulation data:", data);
-
       updateGraph(
         data.sim_params.graph_type,
         data.nodes,
@@ -62,7 +60,9 @@ export const useSimulationsIDsState = ({
 
       onDefaultGraphLoad(data.sim_params.graph_type, data.sim_params.graph_params);
 
-      updateSeed(data.sim_params.model_seed);
+      const seed = data.sim_params.model_seed ? data.sim_params.model_seed : undefined;
+
+      updateSeed(seed);
       updateOP(data.sim_params.p_o);
       updatePP(data.sim_params.p_p);
       updateLambda(data.sim_params.lambda_values);

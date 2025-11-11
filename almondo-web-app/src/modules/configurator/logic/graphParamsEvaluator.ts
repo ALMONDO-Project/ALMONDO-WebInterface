@@ -40,7 +40,6 @@ export const createGraphParams = (
 ): CompleteGraphParams | WSGraphParams => {
   switch (graphType) {
     case "erdos_renyi":
-      console.log("agents:", params[0][1]);
       return new ERGraphParams(params[0][1], params[1][1], params[2][1]);
     case "watts_strogatz":
       return new WSGraphParams(
