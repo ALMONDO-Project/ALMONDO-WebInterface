@@ -50,14 +50,14 @@ export const useSimulationsIDsState = ({
     if (response.status === 200) {
       const data = await response.json();
 
+      console.log("Load simulation data:", data);
+
       updateGraph(
         data.sim_params.graph_type,
         data.nodes,
         data.links,
         data.sim_params.graph_params
       );
-
-      console.log("Received parameters:", data.sim_params.graph_params);
 
       onDefaultGraphLoad(data.sim_params.graph_type, data.sim_params.graph_params);
 

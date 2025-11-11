@@ -7,7 +7,6 @@ import {
   Title,
   Tooltip,
   Legend,
-  scales,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import type { SimulationResults } from "../../../stores/simulationStore";

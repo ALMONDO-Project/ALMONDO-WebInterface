@@ -27,23 +27,35 @@ export type ModelFormState = {
 };
 
 export const useModelForm = () => {
-  const modelSeed = useModelStore((state) => state.modelSeed);
+  const model = useModelStore((state) => state);
+
   const [parameters, setParameters] = useState<ModelParams>({
-    statusType: "uniform",
-    minUniformRange: 0,
-    maxUniformRange: 1,
-    unbiasedValue: undefined,
-    status: undefined,
-    optimisticProbability: 0.01,
-    pessimisticProbability: 0.99,
-    lambda: 0,
-    phi: 0,
-    seed: modelSeed,
+    statusType: model.initialStatus.type,
+    minUniformRange: model.initialStatus.minRange,
+    maxUniformRange: model.initialStatus.maxRange,
+    unbiasedValue: model.initialStatus.unbiasValue,
+    status: model.initialStatus.file,
+    optimisticProbability: model.optimisticProbability,
+    pessimisticProbability: model.pessimisticProbability,
+    lambda: model.lambda,
+    phi: model.phi,
+    seed: model.modelSeed,
   });
 
   useEffect(() => {
-    setParameters({...parameters, seed: modelSeed});
-  }, [modelSeed]);
+    setParameters({
+      statusType: model.initialStatus.type,
+      minUniformRange: model.initialStatus.minRange,
+      maxUniformRange: model.initialStatus.maxRange,
+      unbiasedValue: model.initialStatus.unbiasValue,
+      status: model.initialStatus.file,
+      optimisticProbability: model.optimisticProbability,
+      pessimisticProbability: model.pessimisticProbability,
+      lambda: model.lambda,
+      phi: model.phi,
+      seed: model.modelSeed,
+    });
+  }, [model]);
 
   const updateOP = useModelStore((state) => state.updateOptimisticProbability);
   const updatePP = useModelStore((state) => state.updatePessimisticProbability);
