@@ -39,11 +39,54 @@ const GraphVisualizer = () => {
     if (results) {
       const nodeOpinion = results[results.length - 1].status[nodeId];
 
-      return nodeOpinion > 0.66
-        ? "#F87C63"
-        : nodeOpinion >= 0.33
-        ? "#63F87C"
-        : "#7C63F8";
+      if (nodeOpinion < 0.33) {
+        const blueShades = [
+          "#191970",
+          "#4169E1",
+          "#1E90FF",
+          "#00BFFF",
+          "#87CEEB",
+          "#ADD8E6",
+          "#B0E0E6",
+        ];
+
+        const index = Math.min(
+          Math.floor(nodeOpinion / 0.05),
+          blueShades.length - 1
+        );
+        return blueShades[index];
+      } else if (nodeOpinion < 0.67) {
+        const greenShades = [
+          "#2F4F2F",
+          "#228B22",
+          "#32CD32",
+          "#00FF00",
+          "#7FFF00",
+          "#ADFF2F",
+          "#9ACD32",
+        ];
+        const index = Math.min(
+          Math.floor((nodeOpinion - 0.33) / 0.05),
+          greenShades.length - 1
+        );
+        return greenShades[index];
+      } else {
+        const redShades = [
+          "#8B0000",
+          "#A52A2A",
+          "#B22222",
+          "#DC143C",
+          "#FF0000",
+          "#FF4500",
+          "#FF6347",
+        ];
+
+        const index = Math.min(
+          Math.floor((nodeOpinion - 0.67) / 0.05),
+          redShades.length - 1
+        );
+        return redShades[index];
+      }
     }
     return "#b3b3b3";
   };
@@ -64,6 +107,16 @@ const GraphVisualizer = () => {
         hoveredNodeRingColor={"#FF9E4D"}
         onClick={(n) => handleNodeClick(n)}
       />
+      <div className="z-10 absolute bottom-4 left-4 p-6 bg-white/50 border border-gray-200 rounded-lg shadow-sm">
+        <h1 className="text-xl font-semibold leading-none text-gray-900 mb-4">
+          Current simulation
+        </h1>
+        {simId ? (
+          <p className="text-sm font-medium text-gray-500">{simId}</p>
+        ) : (
+          <p className="text-sm font-medium text-gray-500">No simulation loaded or run</p>
+        )}
+      </div>
       <div className="z-10 absolute top-12 right-4 w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 flex flex-col gap-4">
         {graph && <GraphStatistics graph={graph} />}
         {simId && (

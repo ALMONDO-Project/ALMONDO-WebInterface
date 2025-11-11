@@ -21,6 +21,7 @@ type NodeStatistics = {
   id: string;
   centrality: number;
   opinion: number;
+  label: string;
 };
 
 const NodeStatistics = forwardRef<NodeStatisticsRef, NodeStatisticsProps>(
@@ -56,10 +57,12 @@ const NodeStatistics = forwardRef<NodeStatisticsRef, NodeStatisticsProps>(
             }
           })
           .then((data) => {
+            console.log("node data:", data);
             setNodeInfo({
               id: data.node_info.node_id,
               centrality: data.node_info.node_degree_centrality.toFixed(2),
               opinion: data.node_info.opinion.toFixed(4),
+              label: data.node_info.label
             });
           })
           .catch((err) => console.error("Error fetching node stats", err));
@@ -112,7 +115,7 @@ const NodeStatistics = forwardRef<NodeStatisticsRef, NodeStatisticsProps>(
                     Agent Opinion
                   </p>
                   <p className="text-sm text-gray-500 truncate">
-                    {nodeInfo.opinion}
+                    {nodeInfo.opinion} ({nodeInfo.label})
                   </p>
                 </div>
               </div>

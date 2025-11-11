@@ -10,8 +10,9 @@ export const useSimulationsIDsState = ({
 }: {
   onDefaultGraphLoad: (graphType: string, params: [string, number][]) => void;
 }) => {
-  const [IDs, setIDs] = useState([]);
+  const [IDs, setIDs] = useState<string[]>([]);
   const [selectedId, setSelectedId] = useState("");
+  const simId = useSimulationState((state) => state.simID);
   const updateSimID = useSimulationState((state) => state.updateSimID);
   const updateSimResults = useSimulationState((state) => state.updateResults);
   const updateGraph = useGraphState((state) => state.updateGraph);
@@ -25,8 +26,8 @@ export const useSimulationsIDsState = ({
   useEffect(() => {
     fetch(`${BACKEND_URL}/simulations-ids`)
       .then((response) => response.json())
-      .then((data) => {
-        setIDs(data);
+      .then((data: string[]) => {
+        setIDs(data.filter(id => id !== simId));
         if (data.length !== 0) setSelectedId(data[0]);
       })
       .catch((err) => console.error(err));
