@@ -55,7 +55,7 @@ export default class WSGraphParams {
         validatorFunction = () =>
           newValue >= 2 &&
           newValue % 2 === 0 &&
-          newValue <= this._numOfAgents.value;
+          newValue <= Math.floor(this._numOfAgents.value * 0.1);
         break;
       case "Seed":
         validatorFunction = () => newValue > 0;

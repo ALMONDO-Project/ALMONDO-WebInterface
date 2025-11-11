@@ -37,7 +37,7 @@ const VisualizationPanel = () => {
           </li>
         </div>
       </ul>
-      <div className="flex-1">
+      <div className="flex-1 overflow-hidden">
           {mode === "graph" ? <GraphVisualizer /> : <DataVisualizer />}
       </div>
     </div>

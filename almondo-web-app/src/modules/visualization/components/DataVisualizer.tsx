@@ -26,7 +26,7 @@ const DataVisualizer = () => {
   const simId = useSimulationState((state) => state.simID);
 
   return (
-    <div className="flex flex-col items-center overflow-y-auto h-full">
+    <div className="flex flex-col items-center gap-y-8 overflow-y-auto h-full mt-12 pb-20">
       {results ? (
         <>
           <OpinionsDistribution results={results} />

@@ -10,6 +10,7 @@ import {
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import type { SimulationResults } from "../../../stores/simulationStore";
+import { useRef, useEffect } from "react";
 
 ChartJS.register(
   CategoryScale,
@@ -80,8 +81,20 @@ const getSampledAgentIds = (agentIds: string[]) => {
 }; */
 
 const OpinionsEvolution = ({ results }: { results: SimulationResults }) => {
+  const chartRef = useRef<ChartJS<"line">>(null);
+
+  useEffect(() => {
+      const handleResize = () => {
+        if (chartRef.current) {
+          chartRef.current.resize();
+        }
+      };
+  
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
   const evolutionOptions = {
-    responsive: true,
     plugins: {
       legend: {
         position: "top" as const,
@@ -102,7 +115,7 @@ const OpinionsEvolution = ({ results }: { results: SimulationResults }) => {
     datasets: agents.map(agent => ({
       label: "",
       data: results
-        .map(result => result.status[agent].toFixed(2)),
+        .map(result => Number(result.status[agent].toFixed(2))),
       borderColor:
         results[0].status[agent] < 0.33
           ? "rgba(53, 125, 176, 1)"
@@ -116,8 +129,8 @@ const OpinionsEvolution = ({ results }: { results: SimulationResults }) => {
   };
 
   return (
-    <div className="w-5/6 mt-8 p-8 border border-gray-300 rounded-xl shadow-lg/20">
-      <Line options={evolutionOptions} data={evolutionData} />
+    <div className="w-5/6 p-8 border border-gray-300 rounded-xl shadow-lg/20">
+      <Line ref={chartRef} options={evolutionOptions} data={evolutionData} />
     </div>
   );
 };

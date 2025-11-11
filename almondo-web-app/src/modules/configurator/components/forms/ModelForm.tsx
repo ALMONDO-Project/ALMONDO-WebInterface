@@ -21,7 +21,7 @@ const UniformParameters = ({
           htmlFor="min-range-input"
           className="block mb-2 mt-2 text-base font-normal"
         >
-          Uniform range minimum
+          Range min
         </label>
         <input
           type="number"
@@ -39,7 +39,7 @@ const UniformParameters = ({
           htmlFor="max-range-input"
           className="block mb-2 mt-2 text-base font-normal"
         >
-          Uniform range maximum
+          Range max
         </label>
         <input
           type="number"
@@ -112,11 +112,14 @@ const GaussianAndUserParameters = ({
 
 const ModelForm = ({ formState }: { formState: ModelFormState }) => {
   return (
-    <div className="flex flex-col items-center h-3/4 mt-8">
+    <div className="flex flex-col items-center h-full mt-12 pb-20 overflow-y-auto 
+                [&::-webkit-scrollbar]:w-2
+                [&::-webkit-scrollbar-track]:rounded-full
+                [&::-webkit-scrollbar-track]:bg-gray-100
+                [&::-webkit-scrollbar-thumb]:rounded-full
+                [&::-webkit-scrollbar-thumb]:bg-gray-300">
       <h1 className="font-medium text-2xl">Configure Model</h1>
-      <h2 className="font-medium mt-8">Parameters</h2>
-      <div className="w-3/4 mt-8 overflow-y-auto flex-1 min-h-0">
-        <form className="w-full" onSubmit={formState.handleModelConfig}>
+        <form className="w-2/3 mt-4" onSubmit={formState.handleModelConfig}>
           <label
             htmlFor="model-seed-input"
             className="block mb-2 mt-4 text-base font-normal"
@@ -130,8 +133,8 @@ const ModelForm = ({ formState }: { formState: ModelFormState }) => {
             readOnly
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
           ></input>
-          <div className="flex flex-row">
-            <div className="w-1/2">
+          <div className="flex flex-col md:flex-row">
+            <div className="w-full md:w-1/2">
               <label
                 htmlFor="optimistic-probability-input"
                 className="block mb-2 mt-4 text-base font-normal"
@@ -151,7 +154,7 @@ const ModelForm = ({ formState }: { formState: ModelFormState }) => {
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
               ></input>
             </div>
-            <div className="w-1/2 ms-4">
+            <div className="w-full md:w-1/2 md:ms-4">
               <label
                 htmlFor="pessimistic-probability-input"
                 className="block mb-2 mt-4 text-base font-normal"
@@ -202,11 +205,13 @@ const ModelForm = ({ formState }: { formState: ModelFormState }) => {
             value={Number(formState.parameters.phi)}
             step={0.01}
             onChange={(e) => formState.handleParameterChange("phi", e)}
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 mb-4"
           ></input>
-          <div className="py-3 mt-4 flex items-center text-sm text-gray-800 before:flex-1 before:border-t before:border-gray-200 before:me-6 after:flex-1 after:border-t after:border-gray-200 after:ms-6">
+
+          <div className="py-3 flex items-center text-base before:flex-1 before:border-t before:border-gray-200 before:me-6 after:flex-1 after:border-t after:border-gray-200 after:ms-6">
             Initial Status
           </div>
+
           <label
             htmlFor="initial-status-type"
             className="block mb-2 mt-4 text-base font-normal"
@@ -256,7 +261,6 @@ const ModelForm = ({ formState }: { formState: ModelFormState }) => {
             </button>
           </div>
         </form>
-      </div>
     </div>
   );
 };

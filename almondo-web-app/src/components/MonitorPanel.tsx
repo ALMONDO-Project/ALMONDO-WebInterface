@@ -12,7 +12,7 @@ const MonitorPanel = ({
   return (
     <div
       className={`transition-[width] duration-500 ease-in-out absolute bottom-0 right-0 ${
-        isOpenPanel ? "w-1/3" : "w-0"
+        isOpenPanel ? "w-full md:w-1/2 xl:w-1/3" : "w-0"
       } h-1/2 z-10 border border-gray-300 rounded-tr-xl rounded-tl-xl shadow-lg/20 bg-[#FFFFFF] overflow-hidden`}
     >
       <div

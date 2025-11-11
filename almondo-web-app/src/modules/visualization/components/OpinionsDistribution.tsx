@@ -10,6 +10,7 @@ import {
 import { Bar } from "react-chartjs-2";
 import type { SimulationResults } from "../../../stores/simulationStore";
 import { initializeProbabilityIntervals, updateAgentCounts } from "../logic/opinionsDistributionsUtils";
+import { useRef, useEffect } from "react";
 
 ChartJS.register(
   CategoryScale,
@@ -37,10 +38,21 @@ const getDataToDisplay = (status: StatusData) => {
 };
 
 const OpinionsDistribution = ({ results }: { results: SimulationResults }) => {
+  const chartRef = useRef<ChartJS<"bar">>(null);
   const intervals = getDataToDisplay(results[results.length - 1].status);
 
+  useEffect(() => {
+    const handleResize = () => {
+      if (chartRef.current) {
+        chartRef.current.resize();
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const distributionOptions = {
-    responsive: true,
     plugins: {
       legend: {
         position: "top" as const,
@@ -69,8 +81,8 @@ const OpinionsDistribution = ({ results }: { results: SimulationResults }) => {
   };
 
   return (
-      <div className="w-5/6 mt-8 p-8 border border-gray-300 rounded-xl shadow-lg/20">
-        <Bar options={distributionOptions} data={distributionData} />
+      <div className="w-5/6 p-8 border border-gray-300 rounded-xl shadow-lg/20">
+        <Bar ref={chartRef} options={distributionOptions} data={distributionData} />
       </div>
   );
 };

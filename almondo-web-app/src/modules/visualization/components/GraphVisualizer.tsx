@@ -49,7 +49,7 @@ const GraphVisualizer = () => {
   };
 
   return (
-    <>
+    <div className="relative w-full h-full">
       <Cosmograph
         ref={cosmographRef}
         nodes={graph?.nodes}
@@ -64,7 +64,7 @@ const GraphVisualizer = () => {
         hoveredNodeRingColor={"#FF9E4D"}
         onClick={(n) => handleNodeClick(n)}
       />
-      <div className="z-10 absolute top-4 right-4 w-1/6 flex flex-col gap-4">
+      <div className="z-10 absolute top-12 right-4 w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 flex flex-col gap-4">
         {graph && <GraphStatistics graph={graph} />}
         {simId && (
           <NodeStatistics
@@ -87,7 +87,7 @@ const GraphVisualizer = () => {
           </div>
         )}
       </div>
-    </>
+    </div>
   );
 };
 

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import useGraphState from "../../../stores/graphStore";
 import useModelStore from "../../../stores/modelStore";
 import type { SimulationResults } from "../../../stores/simulationStore";
@@ -139,6 +139,19 @@ const Conformity = ({
       labels: [],
       datasets: [],
     });
+  const chartRef = useRef<ChartJS<"bar">>(null);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (chartRef.current) {
+        chartRef.current.resize();
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const start = -1.0;
   const end = 1.0;
   const numIntervals = 100;
@@ -348,8 +361,9 @@ const Conformity = ({
   }, []);
 
   return (
-    <div className="w-5/6 mt-8 mb-8 p-8 border border-gray-300 rounded-xl shadow-lg/20">
+    <div className="w-5/6 mb-8 p-8 border border-gray-300 rounded-xl shadow-lg/20">
       <Chart
+        ref={chartRef}
         type="bar"
         options={distributionOptions}
         data={conformityDistributions}
