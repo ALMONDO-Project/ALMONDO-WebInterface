@@ -1,5 +1,7 @@
 import almondoIcon from "../assets/almondo-icon.png";
 import pnrrLogo from "../assets/pnrr-logo.png";
+import miurLogo from "../assets/MIUR.jpg";
+import nextGenEULogo from "../assets/NextGenEU.png";
 
 const Header = () => {
   return (
@@ -15,7 +17,11 @@ const Header = () => {
         </h1>
       </div>
 
-      <img className="h-16" src={pnrrLogo} alt="pnrr-logo" />
+      <div className="flex pt-2 gap-x-2">
+        <img className="h-12" src={nextGenEULogo} alt="next generation EU logo" />
+        <img className="h-12" src={miurLogo} alt="miur logo" />
+        <img className="h-12" src={pnrrLogo} alt="pnrr logo" />
+      </div>
     </div>
   );
 };
