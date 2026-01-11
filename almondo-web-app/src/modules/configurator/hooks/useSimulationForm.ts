@@ -54,10 +54,10 @@ export const useSimulationForm = () => {
     const formData = new FormData();
     formData.append("graph_type", graphState.graph!.type);
     formData.append("graph_params", JSON.stringify(graphState.graph?.parameters));
-    formData.append("po", modelState.optimisticProbability.toString());
-    formData.append("po", modelState.pessimisticProbability.toString());
+    formData.append("po", modelState.model!.optimisticProbability.toString());
+    formData.append("po", modelState.model!.pessimisticProbability.toString());
 
-    const initialStatus = modelState.initialStatus!;
+    const initialStatus = modelState.model!.initialStatus;
     formData.append("initialStatus", initialStatus.type);
 
     switch (initialStatus.type) {
@@ -72,14 +72,14 @@ export const useSimulationForm = () => {
         );
         break;
       case "unbiased":
-        formData.append("unbiasedValue", initialStatus.unbiasValue!.toString());
+        formData.append("unbiasedValue", initialStatus.unbiasedValue!.toString());
         break;
       default:
-        formData.append("status", initialStatus.file!);
+        formData.append("status", initialStatus.statusFile!);
     }
 
-    formData.append("lambdaValue", modelState.lambda!.toString());
-    formData.append("phiValue", modelState.phi!.toString());
+    formData.append("lambdaValue", modelState.model!.lambda.toString());
+    formData.append("phiValue", modelState.model!.phi.toString());
     
     if(modelState.modelSeed) {
       formData.append("modelSeed", modelState.modelSeed.toString());

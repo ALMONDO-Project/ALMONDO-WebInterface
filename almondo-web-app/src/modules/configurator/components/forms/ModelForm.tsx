@@ -1,3 +1,4 @@
+import useModelStore from "../../../../stores/modelStore";
 import { type ModelFormState } from "../../hooks/useModelForm";
 
 const UniformParameters = ({
@@ -109,6 +110,8 @@ const GaussianAndUserParameters = ({
 };
 
 const ModelForm = ({ formState }: { formState: ModelFormState }) => {
+  const modelSeed = useModelStore(state => state.modelSeed);
+
   return (
     <div
       className="flex flex-col items-center h-full mt-12 pb-20 overflow-y-auto 
@@ -130,9 +133,9 @@ const ModelForm = ({ formState }: { formState: ModelFormState }) => {
           type="text"
           id="model-seed-input"
           value={
-            formState.parameters.seed === undefined
+            modelSeed === undefined
               ? "Not specified"
-              : String(formState.parameters.seed)
+              : String(modelSeed)
           }
           readOnly
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
@@ -224,7 +227,7 @@ const ModelForm = ({ formState }: { formState: ModelFormState }) => {
         </label>
         <select
           id="initial-status-type"
-          defaultValue={formState.parameters.statusType}
+          defaultValue={formState.parameters.initialStatus.type}
           onChange={(e) => formState.handleStatusTypeChange(e)}
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
         >
@@ -234,15 +237,15 @@ const ModelForm = ({ formState }: { formState: ModelFormState }) => {
           <option value={"user_defined"}>User defined</option>
         </select>
         <div className="flex flex-col mt-4">
-          {formState.parameters.statusType === "uniform" ? (
+          {formState.parameters.initialStatus.type === "uniform" ? (
             <UniformParameters
-              minRange={formState.parameters.minUniformRange}
-              maxRange={formState.parameters.maxUniformRange}
+              minRange={formState.parameters.initialStatus.minRange}
+              maxRange={formState.parameters.initialStatus.maxRange}
               handleParamChange={formState.handleParameterChange}
             />
-          ) : formState.parameters.statusType === "unbiased" ? (
+          ) : formState.parameters.initialStatus.type === "unbiased" ? (
             <UnbiasedParameters
-              unbiasedValue={formState.parameters.unbiasedValue}
+              unbiasedValue={formState.parameters.initialStatus.unbiasedValue}
               handleParamChange={formState.handleParameterChange}
             />
           ) : (
@@ -255,9 +258,9 @@ const ModelForm = ({ formState }: { formState: ModelFormState }) => {
           <button
             type="submit"
             disabled={
-              (formState.parameters.statusType === "gaussian_mixture" ||
-                formState.parameters.statusType === "user_defined") &&
-              formState.parameters.status === undefined
+              (formState.parameters.initialStatus.type === "gaussian_mixture" ||
+                formState.parameters.initialStatus.type === "user_defined") &&
+              formState.parameters.initialStatus.statusFile === undefined
             }
             className="focus:outline-none text-white bg-green-700 disabled:bg-gray-200 hover:bg-green-800 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 mt-4"
           >
