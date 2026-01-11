@@ -34,7 +34,7 @@ export const useDefaultGraphForm = () => {
   );
   const updateGraph = useGraphState((state) => state.updateGraph);
   const addMessage = useMonitorState((state) => state.addMessage);
-  const updateModelSeed = useModelStore((state) => state.updateSeed);
+  const updateModelSeed = useModelStore((state) => state.updateModelSeed);
 
   const handleParameterChange = (paramLabel: string, newValue: number) => {
     setGraphForm(prevGraphForm => ({

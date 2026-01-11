@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-type LobbyistState = {
+type LobbyistsState = {
   numberOfLobbyists: number;
   data: LobbyistsData;
 };
@@ -21,52 +21,38 @@ type InitialStatus = {
   type: "uniform" | "unbiased" | "gaussian_mixture" | "user_defined";
   minRange?: number;
   maxRange?: number;
-  unbiasValue?: number;
-  file?: File;
+  unbiasedValue?: number;
+  statusFile?: File;
 };
 
-type ModelState = {
+export type Model = {
   optimisticProbability: number;
   pessimisticProbability: number;
   lambda: number | number[];
   phi: number | number[];
-  modelSeed: number | undefined;
   initialStatus: InitialStatus;
-  lobbyistsState: LobbyistState;
-  updateOptimisticProbability: (po: number) => void;
-  updatePessimisticProbability: (pp: number) => void;
-  updateLambda: (l: number | number[]) => void;
-  updatePhi: (p: number | number[]) => void;
-  updateSeed: (s: number | undefined) => void;
-  updateInitialStatus: (status: InitialStatus) => void;
+};
+
+type ModelState = {
+  modelSeed: number | undefined;
+  model: Model | null;
+  lobbyistsState: LobbyistsState;
+  updateModelSeed: (seed: number | undefined) => void,
+  updateModel: (model: Model) => void;
   addLobbyist: (lobbyistData: LobbyistData) => void;
   deleteLobbyist: (lobbyistId: number) => void;
-  updateLobbyistsState: (lobbyist: LobbyistState) => void;
+  updateLobbyistsState: (lobbyist: LobbyistsState) => void;
 };
 
 const useModelStore = create<ModelState>()((set) => ({
-  optimisticProbability: 0.01,
-  pessimisticProbability: 0.99,
-  lambda: 0,
-  phi: 0,
   modelSeed: undefined,
-  initialStatus: {
-    type: "uniform",
-    minRange: 0,
-    maxRange: 1,
-  },
+  model: null,
   lobbyistsState: {
     numberOfLobbyists: 0,
     data: [],
   },
-  updateOptimisticProbability: (po) =>
-    set(() => ({ optimisticProbability: po })),
-  updatePessimisticProbability: (pp) =>
-    set(() => ({ pessimisticProbability: pp })),
-  updateLambda: (l) => set(() => ({ lambda: l })),
-  updatePhi: (p) => set(() => ({ phi: p })),
-  updateSeed: (s) => set(() => ({ modelSeed: s })),
-  updateInitialStatus: (status) => set(() => ({ initialStatus: status })),
+  updateModelSeed: (seed) => set(() => ({modelSeed: seed})),
+  updateModel: (model) => set(() => ({ model: model })),
   addLobbyist: (lobbyistData) =>
     set((state) => ({
       lobbyistsState: {
