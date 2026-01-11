@@ -22,64 +22,6 @@ ChartJS.register(
   Legend
 );
 
-/* const getSampledIterations = (totalIterations: number) => {
-  if (totalIterations <= 0) {
-    return [];
-  }
-
-  const SAMPLE_PERCENTAGE = 0.1;
-  let desiredSamples = Math.floor(totalIterations * SAMPLE_PERCENTAGE);
-
-  const minSamples = Math.min(10, totalIterations);
-  if (desiredSamples < minSamples) {
-    desiredSamples = minSamples;
-  }
-
-  const sampledIterations: Set<number> = new Set();
-
-  sampledIterations.add(0);
-  sampledIterations.add(totalIterations - 1);
-
-  const stepSize = Math.floor(totalIterations / desiredSamples);
-
-  for (let i = stepSize; i < totalIterations - 1; i += stepSize) {
-    sampledIterations.add(i);
-  }
-
-  const result = Array.from(sampledIterations).sort((a, b) => a - b);
-
-  return result;
-};
-
-const getSampledAgentIds = (agentIds: string[]) => {
-  if (agentIds.length <= 0) {
-    return [];
-  }
-
-  const SAMPLE_PERCENTAGE = 0.1;
-  let desiredSamples = Math.floor(agentIds.length * SAMPLE_PERCENTAGE);
-  const minSamples = Math.min(10, agentIds.length);
-
-  if (desiredSamples < minSamples) {
-    desiredSamples = minSamples;
-  }
-
-  if (desiredSamples >= agentIds.length) {
-    return [...agentIds];
-  }
-
-  const sampledIds = [];
-  const originalIds = [...agentIds];
-
-  while (sampledIds.length < desiredSamples) {
-    const randomIndex = Math.floor(Math.random() * originalIds.length);
-    const selectedId = originalIds.splice(randomIndex, 1)[0];
-    sampledIds.push(selectedId);
-  }
-
-  return sampledIds;
-}; */
-
 const OpinionsEvolution = ({ results }: { results: SimulationResults }) => {
   const chartRef = useRef<ChartJS<"line">>(null);
 
