@@ -22,8 +22,7 @@ const GraphVisualizer = () => {
   const graph = useGraphState((state) => state.graph);
   const simId = useSimulationState((state) => state.simID);
   const results = useSimulationState((state) => state.results);
-  const op = useModelStore((state) => state.model!.optimisticProbability);
-  const pp = useModelStore((state) => state.model!.pessimisticProbability);
+  const modelState = useModelStore((state) => state);
 
   const handleNodeClick = (n: Node | undefined) => {
     if (n) {
@@ -124,8 +123,8 @@ const GraphVisualizer = () => {
             ref={nodeStatsRef}
             simId={simId}
             simResults={results!}
-            optimisticProbability={op}
-            pessimisticProbability={pp}
+            optimisticProbability={modelState.model!.optimisticProbability}
+            pessimisticProbability={modelState.model!.pessimisticProbability}
             graph={graph!}
           />
         )}
