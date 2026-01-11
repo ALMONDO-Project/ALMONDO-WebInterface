@@ -128,10 +128,10 @@ const Conformity = ({
   simId: string;
 }) => {
   const optimisticProbability = useModelStore(
-    (state) => state.optimisticProbability
+    (state) => state.model!.optimisticProbability
   );
   const pessimisticProbability = useModelStore(
-    (state) => state.pessimisticProbability
+    (state) => state.model!.pessimisticProbability
   );
   const graph = useGraphState((state) => state.graph);
   const [conformityDistributions, setConformityDistributions] =
