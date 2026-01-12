@@ -17,7 +17,7 @@ export type SimulationFormState = {
   handleIterationsChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleRun: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
   handleContinue: (sim_id: string) => Promise<void>;
-}
+};
 
 export const useSimulationForm = () => {
   const [parameters, setParameters] = useState<Parameters>({
@@ -28,10 +28,13 @@ export const useSimulationForm = () => {
   const graphState = useGraphState((state) => state);
   const modelState = useModelStore((state) => state);
   const addMessage = useMonitorState((state) => state.addMessage);
-  const updateSimulationResults = useSimulationState(
-    (state) => state.updateResults
+  const updateSimulation = useSimulationState((state) => state.updateSimulation);
+  const updateCurrentSimIteration = useSimulationState(
+    (state) => state.updateCurrentIteration
   );
-  const updateSimId = useSimulationState((state) => state.updateSimID);
+  const updateSimulationStatus = useSimulationState(
+    (state) => state.updateStatus
+  );
 
   const handleTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const iterations = e.target.value === "steady-state" ? undefined : 100;
@@ -53,7 +56,10 @@ export const useSimulationForm = () => {
 
     const formData = new FormData();
     formData.append("graph_type", graphState.graph!.type);
-    formData.append("graph_params", JSON.stringify(graphState.graph?.parameters));
+    formData.append(
+      "graph_params",
+      JSON.stringify(graphState.graph?.parameters)
+    );
     formData.append("po", modelState.model!.optimisticProbability.toString());
     formData.append("po", modelState.model!.pessimisticProbability.toString());
 
@@ -72,7 +78,10 @@ export const useSimulationForm = () => {
         );
         break;
       case "unbiased":
-        formData.append("unbiasedValue", initialStatus.unbiasedValue!.toString());
+        formData.append(
+          "unbiasedValue",
+          initialStatus.unbiasedValue!.toString()
+        );
         break;
       default:
         formData.append("status", initialStatus.statusFile!);
@@ -80,11 +89,11 @@ export const useSimulationForm = () => {
 
     formData.append("lambdaValue", modelState.model!.lambda.toString());
     formData.append("phiValue", modelState.model!.phi.toString());
-    
-    if(modelState.modelSeed) {
+
+    if (modelState.modelSeed) {
       formData.append("modelSeed", modelState.modelSeed.toString());
     }
-    
+
     formData.append(
       "n_lobbyists",
       modelState.lobbyistsState.numberOfLobbyists.toString()
@@ -116,8 +125,11 @@ export const useSimulationForm = () => {
       message: data.message,
     });
 
-    updateSimId(data.simulation_id);
-    updateSimulationResults(data.sim_results);
+    updateSimulation({
+      simID: data.simulation_id,
+      status: data.sim_results,
+      currentIteration: data.sim_results.length - 1
+    });
   };
 
   const handleContinue = async (sim_id: string) => {
@@ -147,7 +159,8 @@ export const useSimulationForm = () => {
       message: data.message,
     });
 
-    updateSimulationResults(data.sim_results);
+    updateSimulationStatus(data.sim_results);
+    updateCurrentSimIteration(data.sim_results.length - 1);
   };
 
   return {

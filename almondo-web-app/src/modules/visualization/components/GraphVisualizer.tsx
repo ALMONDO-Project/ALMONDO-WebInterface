@@ -7,6 +7,7 @@ import type { NodeStatisticsRef } from "./NodeStatistics";
 import useModelStore from "../../../stores/modelStore";
 import { useRef } from "react";
 import centerIcon from "../../../assets/center-icon.png";
+import IterationsNavigator from "./IterationsNavigator";
 
 type Node = {
   id: string;
@@ -20,8 +21,7 @@ const GraphVisualizer = () => {
     null
   );
   const graph = useGraphState((state) => state.graph);
-  const simId = useSimulationState((state) => state.simID);
-  const results = useSimulationState((state) => state.results);
+  const simulation = useSimulationState((state) => state.simulation);
   const modelState = useModelStore((state) => state);
 
   const handleNodeClick = (n: Node | undefined) => {
@@ -34,9 +34,10 @@ const GraphVisualizer = () => {
     }
   };
 
-  const computeOpinionColor = (nodeId: string) => {
-    if (results) {
-      const nodeOpinion = results[results.length - 1].status[nodeId];
+  const computeOpinionColor = (nodeId: string, iteration: number) => {
+    if (simulation) {
+      const simStatus = simulation.status;
+      const nodeOpinion = simStatus[iteration].status[nodeId];
 
       if (nodeOpinion < 0.33) {
         const blueShades = [
@@ -92,37 +93,46 @@ const GraphVisualizer = () => {
 
   return (
     <div className="relative w-full h-full">
-      <Cosmograph
-        ref={cosmographRef}
-        nodes={graph?.nodes}
-        links={graph?.edges}
-        backgroundColor="#FFFFFF"
-        nodeColor={(n) => computeOpinionColor(n.id)}
-        nodeSize={0.5}
-        linkArrows={false}
-        showDynamicLabels={false}
-        showTopLabels={false}
-        showHoveredNodeLabel={false}
-        hoveredNodeRingColor={"#FF9E4D"}
-        onClick={(n) => handleNodeClick(n)}
-      />
+      {graph && (
+        <Cosmograph
+          ref={cosmographRef}
+          nodes={graph?.nodes}
+          links={graph?.edges}
+          backgroundColor="#FFFFFF"
+          nodeColor={simulation? (n) =>
+            computeOpinionColor(n.id, simulation.currentIteration) : "#8b8a8a"
+          }
+          nodeSize={0.5}
+          linkArrows={false}
+          showDynamicLabels={false}
+          showTopLabels={false}
+          showHoveredNodeLabel={false}
+          hoveredNodeRingColor={"#FF9E4D"}
+          onClick={(n) => handleNodeClick(n)}
+        />
+      )}
       <div className="z-10 absolute bottom-4 left-4 p-6 bg-white/50 border border-gray-200 rounded-lg shadow-sm">
         <h1 className="text-xl font-semibold leading-none text-gray-900 mb-4">
           Current simulation
         </h1>
-        {simId ? (
-          <p className="text-sm font-medium text-gray-500">{simId}</p>
+        {simulation ? (
+          <p className="text-sm font-medium text-gray-500">
+            {simulation.simID}
+          </p>
         ) : (
-          <p className="text-sm font-medium text-gray-500">No simulation loaded or run</p>
+          <p className="text-sm font-medium text-gray-500">
+            No simulation loaded or run
+          </p>
         )}
       </div>
       <div className="z-10 absolute top-12 right-4 w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 flex flex-col gap-4">
         {graph && <GraphStatistics graph={graph} />}
-        {simId && (
+        {simulation && (
           <NodeStatistics
             ref={nodeStatsRef}
-            simId={simId}
-            simResults={results!}
+            simId={simulation.simID}
+            simResults={simulation.status}
+            iteration={simulation.currentIteration}
             optimisticProbability={modelState.model!.optimisticProbability}
             pessimisticProbability={modelState.model!.pessimisticProbability}
             graph={graph!}
@@ -138,6 +148,7 @@ const GraphVisualizer = () => {
             </button>
           </div>
         )}
+        {simulation && <IterationsNavigator />}
       </div>
     </div>
   );

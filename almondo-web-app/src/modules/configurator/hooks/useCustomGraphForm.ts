@@ -18,7 +18,8 @@ export const useCustomGraphForm = () => {
   const [file, setFile] = useState<Blob | null>(null);
   const updateGraph = useGraphState((state) => state.updateGraph);
   const addMessage = useMonitorState((state) => state.addMessage);
-  const {simID, resetSimState} = useSimulationState((state) => state);
+  const simID = useSimulationState((state) => state.simulation?.simID);
+  const resetSimState = useSimulationState((state) => state.resetSimState);
 
   const handleFormatSelection = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setFormat(e.target.value);

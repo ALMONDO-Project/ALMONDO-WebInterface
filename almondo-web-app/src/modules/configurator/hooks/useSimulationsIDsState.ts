@@ -13,9 +13,8 @@ export const useSimulationsIDsState = ({
 }) => {
   const [IDs, setIDs] = useState<string[]>([]);
   const [selectedId, setSelectedId] = useState("");
-  const simId = useSimulationState((state) => state.simID);
-  const updateSimID = useSimulationState((state) => state.updateSimID);
-  const updateSimResults = useSimulationState((state) => state.updateResults);
+  const simId = useSimulationState((state) => state.simulation?.simID);
+  const updateSimulation = useSimulationState((state) => state.updateSimulation);
   const updateGraph = useGraphState((state) => state.updateGraph);
   const updateLobbyists = useModelStore((state) => state.updateLobbyistsState);
   const updateSeed = useModelStore((state) => state.updateModelSeed);
@@ -83,8 +82,12 @@ export const useSimulationsIDsState = ({
         numberOfLobbyists: data.sim_params.n_lobbyists,
         data: data.sim_params.lobbyists_data,
       });
-      updateSimID(data.simulation_id);
-      updateSimResults(data.sim_results);
+
+      updateSimulation({
+        simID: data.simulation_id,
+        status: data.sim_results,
+        currentIteration: data.sim_results.length - 1
+      });
     }
   };
 

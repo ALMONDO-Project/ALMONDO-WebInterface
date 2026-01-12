@@ -48,4 +48,9 @@ export default class Step {
       this.isCompleted = true;
     }
   }
+
+  reset() {
+    this.isCompletable = false;
+    this.isCompleted = false;
+  }
 }

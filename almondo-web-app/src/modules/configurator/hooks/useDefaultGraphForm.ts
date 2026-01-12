@@ -24,7 +24,9 @@ export type DefaultGraphFormState = {
 };
 
 export const useDefaultGraphForm = () => {
-  const {simID, resetSimState} = useSimulationState((state) => state);
+  const simID = useSimulationState((state) => state.simulation?.simID);
+  const resetSimState = useSimulationState((state) => state.resetSimState);  
+  
   const [graphForm, setGraphForm] = useState({
     type: "erdos_renyi",
     parameters: getDefaultParamsByGraphType("erdos_renyi")!,
