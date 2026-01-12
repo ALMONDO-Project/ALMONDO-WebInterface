@@ -1,6 +1,7 @@
 import useMonitorState from "../../../stores/monitorStore";
 import useModelStore from "../../../stores/modelStore";
 import { useState } from "react";
+import useSimulationState from "../../../stores/simulationStore";
 
 type LobbyistParams = {
   strategy: string;
@@ -27,6 +28,8 @@ export const useLobbyistParams = () => {
   const addMessage = useMonitorState(state => state.addMessage);
   const lobbyistsState = useModelStore((state) => state.lobbyistsState);
   const addLobbyist = useModelStore((state) => state.addLobbyist);
+  const simID = useSimulationState((state) => state.simulation?.simID);
+  const resetSimState = useSimulationState((state) => state.resetSimState);
 
   const handleParameterChange = (e: React.ChangeEvent<HTMLInputElement>, param: string) => {
     setParameters({ ...parameters, [param]: e.target.valueAsNumber });
@@ -64,6 +67,10 @@ export const useLobbyistParams = () => {
     };
 
     addLobbyist(lobbyistData);
+
+    if(simID){
+      resetSimState();
+    }
     
     addMessage({
       type: "success",

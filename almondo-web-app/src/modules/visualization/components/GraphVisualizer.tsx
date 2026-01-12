@@ -111,16 +111,16 @@ const GraphVisualizer = () => {
           onClick={(n) => handleNodeClick(n)}
         />
       )}
-      <div className="z-10 absolute bottom-4 left-4 p-6 bg-white/50 border border-gray-200 rounded-lg shadow-sm">
-        <h1 className="text-xl font-semibold leading-none text-gray-900 mb-4">
+      <div className="z-10 absolute top-4 left-4 md:top-auto md:bottom-4 md:left-4 p-3 md:p-6 bg-white/50 border border-gray-200 rounded-lg shadow-sm">
+        <h1 className="ext-base md:text-xl font-semibold leading-none text-gray-900 mb-2 md:mb-4">
           Current simulation
         </h1>
         {simulation ? (
-          <p className="text-sm font-medium text-gray-500">
+          <p className="text-xs md:text-sm font-medium text-gray-500">
             {simulation.simID}
           </p>
         ) : (
-          <p className="text-sm font-medium text-gray-500">
+          <p className="text-xs md:text-sm font-medium text-gray-500">
             No simulation loaded or run
           </p>
         )}

@@ -32,7 +32,7 @@ const IterationsNavigator = () => {
   };
 
   return (
-    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 flex gap-x-10 p-4 bg-white/50 border border-gray-200 rounded-lg shadow-sm">
+    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 flex gap-x-4 md:gap-x-10 p-2 md:p-4 bg-white/50 border border-gray-200 rounded-lg shadow-sm">
       <div className="flex gap-x-2">
         <button
           onClick={() => handleNavigateToFirst()}
@@ -50,16 +50,16 @@ const IterationsNavigator = () => {
         </button>
       </div>
 
-      <div className="flex items-center">
+      <div className="flex items-center whitespace-nowrap">
         <input
           type="number"
-          className="py-2 px-3 w-auto min-w-[3ch] max-w-[8ch] border border-gray-200 rounded-lg text-sm text-center"
+          className="py-1 md:py-2 px-2 md:px-3 w-auto min-w-[3ch] max-w-[8ch] border border-gray-200 rounded-lg text-xs md:text-sm text-center"
           min={1}
           max={totalIterations}
           value={simulation.currentIteration}
           onChange={(e) => handleInputChange(e)}
         />{" "}
-        <span className="text-gray-600 ml-2">/ {totalIterations}</span>
+        <span className="text-gray-600 ml-1 md:ml-2 text-xs md:text-base">/ {totalIterations}</span>
       </div>
 
       <div className="flex gap-x-2">

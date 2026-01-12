@@ -3,6 +3,7 @@ import useGraphState from "../../../stores/graphStore";
 import useSimulationState from "../../../stores/simulationStore";
 import { useEffect, useState } from "react";
 import {type Model} from "../../../stores/modelStore";
+import useMonitorState from "../../../stores/monitorStore";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -13,6 +14,7 @@ export const useSimulationsIDsState = ({
 }) => {
   const [IDs, setIDs] = useState<string[]>([]);
   const [selectedId, setSelectedId] = useState("");
+  const addMessage = useMonitorState((state) => state.addMessage);
   const simId = useSimulationState((state) => state.simulation?.simID);
   const updateSimulation = useSimulationState((state) => state.updateSimulation);
   const updateGraph = useGraphState((state) => state.updateGraph);
@@ -36,6 +38,12 @@ export const useSimulationsIDsState = ({
 
   const handleSimulationLoad = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    addMessage({
+      type: "info",
+      message: `Loading simulation ${selectedId}`,
+      time: new Date()
+    })
 
     const formData = new FormData();
     formData.append("sim_id", selectedId);
@@ -88,6 +96,12 @@ export const useSimulationsIDsState = ({
         status: data.sim_results,
         currentIteration: data.sim_results.length - 1
       });
+
+      addMessage({
+        type: "success",
+        message: data.message,
+        time: new Date()
+      })
     }
   };
 
