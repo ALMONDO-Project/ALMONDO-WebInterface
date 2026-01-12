@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import useGraphState from "../../../stores/graphStore";
 import useModelStore from "../../../stores/modelStore";
-import type { SimulationResults } from "../../../stores/simulationStore";
+import type { SimulationStatus } from "../../../stores/simulationStore";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -120,11 +120,11 @@ const calculateDistribution = (
 
 const Conformity = ({
   results,
-  iteration = -1,
+  iteration,
   simId,
 }: {
-  results: SimulationResults;
-  iteration?: number;
+  results: SimulationStatus;
+  iteration: number;
   simId: string;
 }) => {
   const optimisticProbability = useModelStore(
@@ -170,9 +170,7 @@ const Conformity = ({
       },
       title: {
         display: true,
-        text: `Conformity distributions: iteration ${
-          results[results.length - 1].iteration
-        }`,
+        text: `Conformity distributions: iteration ${iteration}`,
         font: {
           size: 20,
           weight: "bold" as const,
@@ -186,7 +184,7 @@ const Conformity = ({
           text: "Conformity Score Interval",
           font: {
             size: 14,
-          }
+          },
         },
         ticks: {
           autoSkip: true,
@@ -199,7 +197,7 @@ const Conformity = ({
           text: "% Agents",
           font: {
             size: 14,
-          }
+          },
         },
         beginAtZero: true,
       },

@@ -8,8 +8,11 @@ import {
   Legend,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
-import type { SimulationResults } from "../../../stores/simulationStore";
-import { initializeProbabilityIntervals, updateAgentCounts } from "../logic/opinionsDistributionsUtils";
+import type { SimulationStatus } from "../../../stores/simulationStore";
+import {
+  initializeProbabilityIntervals,
+  updateAgentCounts,
+} from "../logic/opinionsDistributionsUtils";
 import { useRef, useEffect } from "react";
 
 ChartJS.register(
@@ -30,16 +33,22 @@ const getDataToDisplay = (status: StatusData) => {
 
   intervals = updateAgentCounts(intervals, Object.values(status));
 
-  for(const interval of intervals) {
-    interval.agentCount = (interval.agentCount / totalAgents) * 100; 
+  for (const interval of intervals) {
+    interval.agentCount = (interval.agentCount / totalAgents) * 100;
   }
 
   return intervals;
 };
 
-const OpinionsDistribution = ({ results }: { results: SimulationResults }) => {
+const OpinionsDistribution = ({
+  results,
+  iteration,
+}: {
+  results: SimulationStatus;
+  iteration: number;
+}) => {
   const chartRef = useRef<ChartJS<"bar">>(null);
-  const intervals = getDataToDisplay(results[results.length - 1].status);
+  const intervals = getDataToDisplay(results[iteration].status);
 
   useEffect(() => {
     const handleResize = () => {
@@ -48,8 +57,8 @@ const OpinionsDistribution = ({ results }: { results: SimulationResults }) => {
       }
     };
 
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   const distributionOptions = {
@@ -59,16 +68,14 @@ const OpinionsDistribution = ({ results }: { results: SimulationResults }) => {
       },
       title: {
         display: true,
-        text: `Agents opinions distribution: iteration ${
-          results[results.length - 1].iteration
-        }`,
+        text: `Agents opinions distribution: iteration ${iteration}`,
         font: {
           size: 20,
           weight: "bold" as const,
         },
         padding: {
           bottom: 20,
-        }
+        },
       },
     },
     scales: {
@@ -78,7 +85,7 @@ const OpinionsDistribution = ({ results }: { results: SimulationResults }) => {
           text: "Opinion intervals",
           font: {
             size: 14,
-          }
+          },
         },
       },
       y: {
@@ -87,21 +94,23 @@ const OpinionsDistribution = ({ results }: { results: SimulationResults }) => {
           text: "% Agents",
           font: {
             size: 14,
-          }
+          },
         },
         beginAtZero: true,
       },
     },
   };
 
-  const labels = intervals.map(interval => interval.start.toFixed(2) + " - " + interval.end.toFixed(2));
+  const labels = intervals.map(
+    (interval) => interval.start.toFixed(2) + " - " + interval.end.toFixed(2)
+  );
 
   const distributionData = {
     labels,
     datasets: [
       {
         label: "% Agents",
-        data: intervals.map(interval => interval.agentCount),
+        data: intervals.map((interval) => interval.agentCount),
         borderColor: "rgba(50, 100, 208, 1)",
         backgroundColor: "rgba(59, 130, 216, 0.64)",
       },
@@ -109,9 +118,13 @@ const OpinionsDistribution = ({ results }: { results: SimulationResults }) => {
   };
 
   return (
-      <div className="w-5/6 p-8 border border-gray-300 rounded-xl shadow-lg/20">
-        <Bar ref={chartRef} options={distributionOptions} data={distributionData} />
-      </div>
+    <div className="w-5/6 p-8 border border-gray-300 rounded-xl shadow-lg/20">
+      <Bar
+        ref={chartRef}
+        options={distributionOptions}
+        data={distributionData}
+      />
+    </div>
   );
 };
 

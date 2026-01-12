@@ -17,7 +17,7 @@ const Controls = ({
 }) => {
   const graphNodes = useGraphState((state) => state.graph?.nodes);
   const modelState = useModelStore((state) => state);
-  const simID = useSimulationState((state) => state.simID);
+  const simID = useSimulationState((state) => state.simulation?.simID);
 
   const isValidModelState = () => modelState.model;
 
@@ -32,6 +32,8 @@ const Controls = ({
   if(simID) {
     steps[4].makeCompletable();
     steps[4].complete();
+  } else {
+    steps[4].reset();
   }
 
   return (

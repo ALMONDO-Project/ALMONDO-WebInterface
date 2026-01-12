@@ -1,5 +1,5 @@
 import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
-import type { SimulationResults } from "@/stores/simulationStore";
+import type { SimulationStatus } from "@/stores/simulationStore";
 import type { Graph } from "../../../stores/graphStore";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
@@ -7,7 +7,7 @@ const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 interface NodeStatisticsProps {
   simId: string;
   iteration?: number;
-  simResults: SimulationResults;
+  simResults: SimulationStatus;
   optimisticProbability: number;
   pessimisticProbability: number;
   graph: Graph;
@@ -44,6 +44,7 @@ const NodeStatistics = forwardRef<NodeStatisticsRef, NodeStatisticsProps>(
             p_o: props.optimisticProbability,
             p_p: props.pessimisticProbability,
             simulation_id: props.simId,
+            iteration: props.iteration,
             graph_type: props.graph.type,
             nodes: JSON.stringify(props.graph.nodes.map((n) => n.id)),
             edges: JSON.stringify(

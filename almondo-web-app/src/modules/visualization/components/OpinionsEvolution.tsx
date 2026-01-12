@@ -9,7 +9,7 @@ import {
   Legend,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
-import type { SimulationResults } from "../../../stores/simulationStore";
+import type { SimulationStatus } from "../../../stores/simulationStore";
 import { useRef, useEffect } from "react";
 
 ChartJS.register(
@@ -22,7 +22,7 @@ ChartJS.register(
   Legend
 );
 
-const OpinionsEvolution = ({ results }: { results: SimulationResults }) => {
+const OpinionsEvolution = ({ results }: { results: SimulationStatus }) => {
   const chartRef = useRef<ChartJS<"line">>(null);
 
   useEffect(() => {

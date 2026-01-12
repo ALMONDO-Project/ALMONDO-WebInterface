@@ -22,19 +22,27 @@ ChartJS.register(
 );
 
 const DataVisualizer = () => {
-  const results = useSimulationState((state) => state.results);
-  const simId = useSimulationState((state) => state.simID);
+  const simulation = useSimulationState((state) => state.simulation);
 
   return (
     <div className="flex flex-col items-center gap-y-8 overflow-y-auto h-full mt-12 pb-20">
-      {results ? (
+      {simulation ? (
         <>
-          <OpinionsDistribution results={results} />
-          <OpinionsEvolution results={results} />
-          <Conformity results={results} simId={simId!} />
+          <OpinionsDistribution
+            results={simulation.status}
+            iteration={simulation.currentIteration}
+          />
+          <OpinionsEvolution results={simulation.status} />
+          <Conformity
+            results={simulation.status}
+            iteration={simulation.currentIteration}
+            simId={simulation.simID}
+          />
         </>
       ) : (
-        <div className="flex justify-center w-full mt-16 text-lg">Run/Load simulation to view results.</div>
+        <div className="flex justify-center w-full mt-16 text-lg">
+          Run/Load simulation to view results.
+        </div>
       )}
     </div>
   );

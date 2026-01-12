@@ -29,7 +29,8 @@ const defaultParams: Model = {
 
 export const useModelForm = () => {
   const modelState = useModelStore((state) => state);
-  const { simID, resetSimState } = useSimulationState((state) => state);
+  const simID = useSimulationState((state) => state.simulation?.simID);
+  const resetSimState = useSimulationState((state) => state.resetSimState);
 
   const [parameters, setParameters] = useState<Model>(defaultParams);
 

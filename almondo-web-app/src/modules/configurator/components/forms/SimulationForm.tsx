@@ -3,7 +3,7 @@ import { type SimulationFormState } from "../../hooks/useSimulationForm";
 
 const SimulationForm = ({formState} : {formState: SimulationFormState}) => {
   const { parameters, handleTypeChange, handleIterationsChange, handleRun, handleContinue } = formState;
-  const sim_id = useSimulationState(state => state.simID)
+  const simID = useSimulationState(state => state.simulation?.simID);
 
   return (
     <div className="flex flex-col items-center h-3/4 mt-8">
@@ -54,8 +54,8 @@ const SimulationForm = ({formState} : {formState: SimulationFormState}) => {
           </button>
           <button
             type="button"
-            disabled={sim_id === undefined}
-            onClick={() => handleContinue(sim_id!)}
+            disabled={simID === undefined}
+            onClick={() => handleContinue(simID!)}
             className="focus:outline-none text-white bg-green-700 disabled:bg-gray-200 hover:bg-green-800 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 mt-4"
           >
             Continue
