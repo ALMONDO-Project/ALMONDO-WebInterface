@@ -14,9 +14,9 @@ const GraphFormSelector = ({
   const { selected, handleFormChange } = useSelectedFormState();
 
   return (
-    <div className="flex flex-col items-center h-full mt-8">
+    <div className="flex flex-col items-center h-full pt-8 min-h-0">
       <h1 className="font-medium text-2xl">Configure Graph</h1>
-      <div className="w-full flex flex-col flex-1 min-h-0">
+      <div className="w-full flex flex-col min-h-0">
         <ul className="flex flex-row justify-center mt-4">
           <div
             className={`border-b px-2 ${
@@ -48,7 +48,7 @@ const GraphFormSelector = ({
           </div>
         </ul>
         <div
-          className="mt-8 flex flex-col items-center overflow-y-auto flex-1 pb-16 
+          className="flex flex-col items-center pt-10 pb-20 min-h-0 overflow-y-auto 
                 [&::-webkit-scrollbar]:w-2
                 [&::-webkit-scrollbar-track]:rounded-full
                 [&::-webkit-scrollbar-track]:bg-gray-100

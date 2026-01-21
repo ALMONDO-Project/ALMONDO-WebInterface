@@ -45,7 +45,7 @@ const Configurator = () => {
   return (
     <div className="h-full flex flex-col">
       <Stepper steps={steps} current={currentStep} />
-      <div className="flex-1 min-h-0">{getCurrentForm()}</div>
+      <div className="flex-1 min-h-0 overflow-hidden">{getCurrentForm()}</div>
       <Controls
         steps={steps}
         currentStep={currentStep}

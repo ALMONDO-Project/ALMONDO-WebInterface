@@ -18,7 +18,7 @@ type Node = {
 const GraphVisualizer = () => {
   const nodeStatsRef = useRef<NodeStatisticsRef>(null);
   const cosmographRef = useRef<React.ComponentRef<typeof Cosmograph> | null>(
-    null
+    null,
   );
   const graph = useGraphState((state) => state.graph);
   const simulation = useSimulationState((state) => state.simulation);
@@ -52,7 +52,7 @@ const GraphVisualizer = () => {
 
         const index = Math.min(
           Math.floor(nodeOpinion / 0.05),
-          blueShades.length - 1
+          blueShades.length - 1,
         );
         return blueShades[index];
       } else if (nodeOpinion < 0.67) {
@@ -67,7 +67,7 @@ const GraphVisualizer = () => {
         ];
         const index = Math.min(
           Math.floor((nodeOpinion - 0.33) / 0.05),
-          greenShades.length - 1
+          greenShades.length - 1,
         );
         return greenShades[index];
       } else {
@@ -83,7 +83,7 @@ const GraphVisualizer = () => {
 
         const index = Math.min(
           Math.floor((nodeOpinion - 0.67) / 0.05),
-          redShades.length - 1
+          redShades.length - 1,
         );
         return redShades[index];
       }
@@ -99,8 +99,10 @@ const GraphVisualizer = () => {
           nodes={graph?.nodes}
           links={graph?.edges}
           backgroundColor="#FFFFFF"
-          nodeColor={simulation? (n) =>
-            computeOpinionColor(n.id, simulation.currentIteration) : "#8b8a8a"
+          nodeColor={
+            simulation
+              ? (n) => computeOpinionColor(n.id, simulation.currentIteration)
+              : "#8b8a8a"
           }
           nodeSize={0.5}
           linkArrows={false}
@@ -125,28 +127,38 @@ const GraphVisualizer = () => {
           </p>
         )}
       </div>
-      <div className="z-10 absolute top-12 right-4 w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 flex flex-col gap-4">
-        {graph && <GraphStatistics graph={graph} />}
-        {simulation && (
-          <NodeStatistics
-            ref={nodeStatsRef}
-            simId={simulation.simID}
-            simResults={simulation.status}
-            iteration={simulation.currentIteration}
-            optimisticProbability={modelState.model!.optimisticProbability}
-            pessimisticProbability={modelState.model!.pessimisticProbability}
-            graph={graph!}
-          />
-        )}
+      <div
+        className="z-10 absolute top-12 right-4 w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 flex flex-col gap-4 max-h-[calc(100vh-8rem)] overflow-y-auto pb-26
+        [&::-webkit-scrollbar]:hidden
+        [-ms-overflow-style:none]
+        [scrollbar-width:none]
+      "
+      >
         {graph && (
-          <div className="flex justify-end">
-            <button
-              onClick={() => cosmographRef.current?.fitView()}
-              className="size-12 p-3 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50"
-            >
-              <img src={centerIcon} />
-            </button>
-          </div>
+          <>
+            <GraphStatistics graph={graph} />
+            {simulation && (
+              <NodeStatistics
+                ref={nodeStatsRef}
+                simId={simulation.simID}
+                simResults={simulation.status}
+                iteration={simulation.currentIteration}
+                optimisticProbability={modelState.model!.optimisticProbability}
+                pessimisticProbability={
+                  modelState.model!.pessimisticProbability
+                }
+                graph={graph!}
+              />
+            )}
+            <div className="flex justify-end">
+              <button
+                onClick={() => cosmographRef.current?.fitView()}
+                className="size-12 p-3 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50"
+              >
+                <img src={centerIcon} />
+              </button>
+            </div>
+          </>
         )}
         {simulation && <IterationsNavigator />}
       </div>
