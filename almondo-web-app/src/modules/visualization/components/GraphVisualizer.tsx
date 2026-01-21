@@ -128,7 +128,7 @@ const GraphVisualizer = () => {
         )}
       </div>
       <div
-        className="z-10 absolute top-12 right-4 w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 flex flex-col gap-4 max-h-[calc(100vh-8rem)] overflow-y-auto pb-26
+        className="z-10 absolute top-12 right-4 w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 flex flex-col gap-4 max-h-[calc(100vh-8rem)] overflow-y-auto pb-30
         [&::-webkit-scrollbar]:hidden
         [-ms-overflow-style:none]
         [scrollbar-width:none]
@@ -153,7 +153,7 @@ const GraphVisualizer = () => {
             <div className="flex justify-end">
               <button
                 onClick={() => cosmographRef.current?.fitView()}
-                className="size-12 p-3 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50"
+                className="size-12 p-3 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs cursor-pointer hover:bg-gray-50"
               >
                 <img src={centerIcon} />
               </button>

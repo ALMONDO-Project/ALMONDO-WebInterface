@@ -27,7 +27,7 @@ const MonitorPanel = ({
           <button
             type="button"
             onClick={() => handleClear()}
-            className="text-sm font-semibold rounded-lg text-gray-500 hover:text-blue-600 focus:outline-hidden focus:text-blue-600 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:hover:text-white/70 dark:focus:text-white/70"
+            className="text-sm font-semibold rounded-lg text-gray-500 cursor-pointer hover:text-blue-600 focus:outline-hidden focus:text-blue-600 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:hover:text-white/70 dark:focus:text-white/70"
           >
             clear
           </button>
